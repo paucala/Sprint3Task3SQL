@@ -1,27 +1,23 @@
 package org.example.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Ticket {
 
-   private ArrayList<Product> products;
+   private int sellId;
+   private ArrayList<ProductforSale> productforSales;
 
-    public Ticket() {
-        this.products = new ArrayList<>();
-    }
+   public Ticket(int idVenta){
+      this.sellId = idVenta;
+      this.productforSales = new ArrayList<>();
+   }
 
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
+   public int getSellId() {
+      return sellId;
+   }
 
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "products=" + products.toString() +
-                '}';
-    }
+   public ArrayList<ProductforSale> getProductforSales() {
+      return productforSales;
+   }
 }

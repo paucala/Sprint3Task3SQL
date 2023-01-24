@@ -1,15 +1,14 @@
 package org.example.domain;
 
-abstract class Product {
+public abstract class Product {
 
-    private static int id = 0;
+    private static int id;
     private String name;
     private int price;
     private int quantity;
 
     public Product(String name, int price, int quantity) {
         this.price = price;
-        id++;
         this.name = name;
         this.quantity = quantity;
     }
