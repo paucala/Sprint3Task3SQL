@@ -88,15 +88,15 @@ public class Repository implements Repo{
     }
 
     @Override
-    public List<Sell> getAllSells() throws IOException {
+    public List<Ticket> getAllSells() throws IOException {
     BufferedReader reader = new BufferedReader(new FileReader(flowershop));
     String line;
-    ArrayList<Sell> sells = new ArrayList<>();
+    ArrayList<Ticket> sells = new ArrayList<>();
 
         while ((line = reader.readLine()) != null) {
         if (line.startsWith("Sell")){
             String[] parts = line.split(";");
-            Sell sell = new Sell(Integer.valueOf(parts[1]), Double.valueOf(parts[2]));
+            Ticket sell = new Ticket(Integer.valueOf(parts[1]), Double.valueOf(parts[2]));
             sells.add(sell);
         }
         }
@@ -192,7 +192,7 @@ public class Repository implements Repo{
     }
 
     @Override
-    public void createSell(Sell sell) throws IOException {
+    public void createSell(Ticket sell) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershop, true));
         StringBuilder newsell = new StringBuilder();
         newsell.append("Sell;");

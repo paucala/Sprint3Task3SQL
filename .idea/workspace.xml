@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b553650-1b20-44da-9593-5dd685f023d7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Decoration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Decoration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Flower.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Flower.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Sell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Sell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Sell.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Tree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/Repo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/Repo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/Repository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/Serv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/Serv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/Service.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,17 +1,16 @@
 package org.example.service;
 
 import org.example.domain.Product;
-import org.example.domain.Sell;
 import org.example.domain.Ticket;
 
 import java.util.List;
 
 public interface Serv {
     List<Product> getAllProducts();
-    List<Sell> getAllSells();
+    List<Ticket> getAllSells();
     void createProduct(Product product);
     void createTicket(Ticket ticket);
-    void createSell(Sell sell);
+    void createSell(Ticket ticket);
     //per calcular el total de totes les ventes
     double sumSales();
     //per calcular el total d'unaa venta
