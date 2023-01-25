@@ -1,12 +1,14 @@
 package org.example.service;
 
 import org.example.domain.*;
+import org.example.exception.SumMethodException;
 import org.example.repository.Repo;
 import org.example.repository.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.XMLFormatter;
 
 public class Service implements Serv {
 
@@ -92,8 +94,6 @@ public class Service implements Serv {
     public boolean createTicket(Ticket ticket) {
         //region DEFINITION VARIABLES
         boolean result =false;
-        Double totalPrice= 0.0;
-        List<ProductforSale> productsList;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -102,12 +102,10 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            productsList = new ArrayList<>();
             repoCls = new Repository();
 
             // 1) CALCULATE TOTAL PRICE
-            productsList.addAll(ticket.getProductforSales());
-            ticket.setTotalPrice(productsList.stream().mapToDouble(p -> p.getPrice()).sum());
+            ticket.setTotalPrice(sumTicket(ticket));
 
             // 2) SAVE TICKET
             repoCls.createTicket(ticket);
@@ -247,8 +245,35 @@ public class Service implements Serv {
      * @return el valor de la suma
      */
     @Override
-    public double sumStock() {
-        return 0;
+    public double sumStock() throws SumMethodException {
+        //region DEFINITION VARIABLES
+        double result = 0;
+        List<Decoration> decoList;
+        List<Flower> flowersList;
+        List<Tree> treeList;
+        Repository repoCls;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        try {
+            // INIT VALUES
+            decoList = new ArrayList<>();
+
+
+
+        }catch (Exception ex){
+            //TODO control errors
+            result = 0;
+            throw new SumMethodException(3);
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+        return result;
     }
 
     /**
@@ -256,17 +281,76 @@ public class Service implements Serv {
      * @return el valor del tiquet.
      */
     @Override
-    public double sumTicket(Ticket ticket) {
-        return 0;
+    public double sumTicket(Ticket ticket) throws SumMethodException {
+        //region DEFINITION VARIABLES
+        double result;
+        List<ProductforSale> productsList;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        try{
+            // INIT VARIABLES
+            productsList = new ArrayList<>();
+
+            // SUM VALUES
+            result = productsList.stream().mapToDouble(p -> p.getPrice()).sum();
+
+        }catch (Exception ex){
+            //TODO control errors
+            result =0.0;
+            throw new SumMethodException(2);
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+
+        return result;
     }
 
     /**
      * Mètode per sumar el valor de tots els tickets que s'han creat
-     * @return el valor de la suma
+     * @return el valor de la suma. NOTA! Si el valor retornat és
      */
     @Override
-    public double sumAllTickets() {
-        return 0;
+    public double sumAllTickets() throws SumMethodException {
+        //region DEFINITION VARIABLES
+        double result = 0;
+        List<Ticket> ticketList;
+        Repository repoCls;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        try{
+            // INIT VARIABLES
+            ticketList = new ArrayList<Ticket>();
+            repoCls = new Repository();
+
+            // 1) GET ALL TICKETS ON DDBB
+            //TODO falta el métode del repository que torni tots els tickets
+            //ticketList.addAll(repoCls);
+
+            // 2) SUM TICKETS VALUES
+            for (Ticket t: ticketList) {
+                result+=t.getTotalPrice();
+            }
+
+        }catch (Exception ex){
+            //TODO control errors
+            throw new SumMethodException(1);
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+        return result;
+
     }
     //endregion METHODS: OTHERS (SUM,...)
 

@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.domain.Product;
 import org.example.domain.Ticket;
+import org.example.exception.SumMethodException;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,20 +56,20 @@ public interface Serv {
      *
      * @return
      */
-    double sumStock();
+    double sumStock() throws SumMethodException;
 
     /**
      * Metode per sumar el total d'un sol ticket
      *
      * @return
      */
-    double sumTicket(Ticket ticket);
+    double sumTicket(Ticket ticket) throws SumMethodException;
 
     /**
      * Mètode per sumar el valor de tots els tiquets
      * @return la suma de tots els tikets
      */
-    double sumAllTickets();
+    double sumAllTickets() throws SumMethodException;
 
     //endregion METHODS: OTHERS (INIT, SUM,...)
 
