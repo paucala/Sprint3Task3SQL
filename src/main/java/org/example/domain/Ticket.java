@@ -36,6 +36,15 @@ public class Ticket {
    public void setTotalPrice(double totalPrice) {
       this.totalPrice = totalPrice;
    }
+
+   @Override
+   public String toString() {
+      return "Ticket{" +
+              "id=" + id +
+              ", productforSales=" + productforSales +
+              ", totalPrice=" + totalPrice +
+              '}';
+   }
 }
 
 

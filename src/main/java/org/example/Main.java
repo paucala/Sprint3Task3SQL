@@ -2,14 +2,13 @@ package org.example;
 
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.example.domain.Decoration;
-import org.example.domain.Flower;
-import org.example.domain.Product;
-import org.example.domain.Tree;
+import org.example.domain.*;
+import org.example.repository.Repository;
 import org.example.service.Serv;
 import org.example.service.Service;
 
@@ -19,9 +18,9 @@ public class Main {
 	private static Scanner inputKey;	
 	private static String shopName;
 	private static List<Product> products = new ArrayList<>();
-	
-	public static void main(String[] args) {
-		
+
+	public static void main(String[] args) throws IOException {
+
 		wellcome();
     }
 	
@@ -60,7 +59,7 @@ public class Main {
 		/*
 		 * Stock menues
 		 */
-		
+
 	}	
 	public static void productMenu() {
 		System.out.println("\n" + "** Product menu **" + "\n");
@@ -173,7 +172,7 @@ public class Main {
 	/*
 	 * Invoice menues
 	 */
-	
+
 	public static void invoiceMenu() {
 		
 		System.out.println("\n" + "** Invoice menu **" + "\n");
