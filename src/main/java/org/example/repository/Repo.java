@@ -10,14 +10,16 @@ public interface Repo {
     boolean findbyId(int id, String type) throws IOException;
     boolean findbyName(String name) throws IOException;
     List<Product> getAllProducts() throws IOException;
-    List<Sell> getAllSells();
-    Product getById(int id, String type);
+    List<Ticket> getAllSells() throws IOException;
+    Product getById(int id, String type) throws IOException;
     void createFlower(Flower flower) throws IOException;
     void createTree(Tree tree) throws IOException;
     void createDeco(Decoration decoration) throws IOException;
-    void createTicket(Ticket ticket);
-    void createSell(Sell sell);
-    void updateProduct(Product product);
+    void createTicket(Ticket ticket) throws IOException;
+    void createSell(Ticket sell) throws IOException;
+    void updateTree(Tree tree) throws IOException;
+    void updateFlower(Flower flower) throws IOException;
+    void updateDeco(Decoration decoration) throws IOException;
     //Devuelve un String con el nombre del archivo o un empty si no existe
     String init();
     void createFlowerShop(String name) throws IOException;

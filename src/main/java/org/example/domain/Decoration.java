@@ -3,12 +3,12 @@ package org.example.domain;
 public class Decoration extends Product{
     private String material;
 
-    public Decoration(String name, int price, int quantity, String material) {
+    public Decoration(String name, double price, int quantity, String material) {
         super(name, price, quantity);
         this.material = material;
     }
 
-    public Decoration(int id, String name, int price, int quantity, String material) {
+    public Decoration(int id, String name, double price, int quantity, String material) {
         super(id, name, price, quantity);
         this.material = material;
     }

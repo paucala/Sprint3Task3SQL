@@ -3,12 +3,12 @@ package org.example.domain;
 public class Tree extends Product{
     double high;
 
-    public Tree(String name, int price, int quantity, double high) {
+    public Tree(String name, double price, int quantity, double high) {
         super(name, price, quantity);
         this.high = high;
     }
 
-    public Tree(int id, String name, int price, int quantity, double high) {
+    public Tree(int id, String name, double price, int quantity, double high) {
         super(id, name, price, quantity);
         this.high = high;
     }

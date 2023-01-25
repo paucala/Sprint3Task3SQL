@@ -7,13 +7,13 @@ public abstract class Product {
     private double price;
     private int quantity;
 
-    public Product(String name, int price, int quantity) {
+    public Product(String name, double price, int quantity) {
         this.price = price;
         this.name = name;
         this.quantity = quantity;
     }
 
-    public Product(int id, String name, int price, int quantity) {
+    public Product(int id, String name, double price, int quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -44,7 +44,7 @@ public abstract class Product {
         this.quantity = quantity;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

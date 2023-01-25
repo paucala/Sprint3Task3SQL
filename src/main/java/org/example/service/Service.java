@@ -46,10 +46,10 @@ public class Service implements Serv {
     }
 
     @Override
-    public List<Sell> getAllSells() {
+    public List<Ticket> getAllSells() {
         //region DEFINITION VARIABLES
-        List<Sell> sellList;
-        Repository repoCls;
+        List<Ticket> sellList;
+        Service sercCls;
 
         //endregion DEFINITION VARIABLES
 
@@ -57,8 +57,9 @@ public class Service implements Serv {
         //region ACTIONS
         try{
             // INIT VARIABLES
-            repoCls = new Repository();
-            sellList = new ArrayList<Sell>();
+            sercCls = new Service();
+            sellList = new ArrayList<Ticket>();
+
 
             // CALL REPOSITORY METHOD
             sellList.addAll(repoCls.getAllSells());
@@ -154,7 +155,7 @@ public class Service implements Serv {
     }
 
     @Override
-    public void createSell(Sell sell) {
+    public void createSell(Ticket ticket) {
         //region DEFINITION VARIABLES
         Repository repoCls;
 
@@ -167,7 +168,9 @@ public class Service implements Serv {
             repoCls = new Repository();
 
             // CALL REPOSITORY METHOD
-            repoCls.createSell(sell);
+
+            sercCls.createSell(ticket);
+
 
         }catch(Exception ex){
             throw ex;
@@ -188,8 +191,10 @@ public class Service implements Serv {
     @Override
     public double sumSales() {
         //region DEFINITION VARIABLES
-        List<Sell> sellList = new ArrayList<Sell>();
-        Repository repoCls;
+
+        List<Ticket> sellList = new ArrayList<Ticket>();
+        Service sercCls;
+
 
         //endregion DEFINITION VARIABLES
 
@@ -202,7 +207,7 @@ public class Service implements Serv {
             // GET LIST OF SALES
             sellList.addAll(repoCls.getAllSells());
 
-            for (Sell s: sellList) {
+            for (Ticket s: sellList) {
 
             }
 
@@ -285,7 +290,7 @@ public class Service implements Serv {
 
 
     //region AUXILARY METHODS
-    private double sumSellAux(Sell sell){
+    private double sumSellAux(Ticket sell){
         //region DEFINITION VARIABLES
         double totalValue = 0;
         List<Ticket> ticketList;

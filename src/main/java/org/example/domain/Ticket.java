@@ -5,19 +5,37 @@ import java.util.HashMap;
 
 public class Ticket {
 
-   private int sellId;
+   private int id;
    private ArrayList<ProductforSale> productforSales;
 
-   public Ticket(int idVenta){
-      this.sellId = idVenta;
+   private double totalPrice;
+
+   public Ticket(int id, double totalPrice){
+      this.id = id;
+      this.totalPrice = totalPrice;
+   }
+   public Ticket(){
+      this.id = id;
       this.productforSales = new ArrayList<>();
+      this.totalPrice = totalPrice;
    }
 
-   public int getSellId() {
-      return sellId;
+
+   public int getId() {
+      return id;
    }
 
    public ArrayList<ProductforSale> getProductforSales() {
       return productforSales;
    }
+
+   public double getTotalPrice() {
+      return totalPrice;
+   }
+
+   public void setTotalPrice(double totalPrice) {
+      this.totalPrice = totalPrice;
+   }
 }
+
+
