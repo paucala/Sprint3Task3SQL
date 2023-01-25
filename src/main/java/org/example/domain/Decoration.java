@@ -8,6 +8,11 @@ public class Decoration extends Product{
         this.material = material;
     }
 
+    public Decoration(int id, String name, int price, int quantity, String material) {
+        super(id, name, price, quantity);
+        this.material = material;
+    }
+
     public String getMaterial() {
         return material;
     }
