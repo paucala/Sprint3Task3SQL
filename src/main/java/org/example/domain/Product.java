@@ -4,7 +4,7 @@ public abstract class Product {
 
     private int id;
     private String name;
-    private int price;
+    private double price;
     private int quantity;
 
     public Product(String name, int price, int quantity) {
@@ -32,7 +32,7 @@ public abstract class Product {
         return quantity;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
