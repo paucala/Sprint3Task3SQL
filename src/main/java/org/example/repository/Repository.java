@@ -111,7 +111,7 @@ public class Repository implements Repo{
         newdeco.append(", name: " + decoration.getName());
         newdeco.append(", price: " + decoration.getPrice());
         newdeco.append(", quantity" + decoration.getQuantity());
-        newdeco.append(", color: " + decoration.getColor());
+        newdeco.append(", color: " + decoration.getMaterial());
         writer.write(newdeco.toString());
         writer.close();
 
