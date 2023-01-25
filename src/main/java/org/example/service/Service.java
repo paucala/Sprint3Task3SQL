@@ -1,8 +1,6 @@
 package org.example.service;
 
-import org.example.domain.Product;
-import org.example.domain.Sell;
-import org.example.domain.Ticket;
+import org.example.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +84,17 @@ public class Service implements Serv {
             // INIT VARIABLES
             sercCls = new Service();
 
-            // CALL REPOSITORY METHOD
-            sercCls.createProduct(product);
+            // CALL REPOSITORY METHODS
+            if(product.getClass() == Decoration.class){
+                sercCls.createProduct(product);
+            }else if(product.getClass() == Flower.class){
+                sercCls.createProduct(product);
+            }else if(product.getClass() == Tree.class){
+                sercCls.createProduct(product);
+            }else{
+                //TODO Llançar error que la classe no es correcte
+            }
+
 
         }catch(Exception ex){
             throw ex;
