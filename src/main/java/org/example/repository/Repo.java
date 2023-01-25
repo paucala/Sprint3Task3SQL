@@ -22,5 +22,8 @@ public interface Repo {
     String init();
     void createFlowerShop(String name) throws IOException;
 
+    void updateTree(Tree tree);
+    void updateFlower(Flower flower);
+    void updateDeco(Decoration decoration);
 
 }

@@ -4,12 +4,13 @@ import org.example.domain.Product;
 import org.example.domain.Sell;
 import org.example.domain.Ticket;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Serv {
-    List<Product> getAllProducts();
+    List<Product> getAllProducts() throws IOException;
     List<Sell> getAllSells();
-    void createProduct(Product product);
+    void createProduct(Product product) throws IOException;
     void createTicket(Ticket ticket);
     void createSell(Sell sell);
     //per calcular el total de totes les ventes
