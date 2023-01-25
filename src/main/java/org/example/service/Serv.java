@@ -3,12 +3,14 @@ package org.example.service;
 import org.example.domain.Product;
 import org.example.domain.Ticket;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Serv {
     List<Product> getAllProducts();
     List<Ticket> getAllSells();
     void createProduct(Product product);
+
     void createTicket(Ticket ticket);
     void createSell(Ticket ticket);
     //per calcular el total de totes les ventes
