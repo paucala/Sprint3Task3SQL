@@ -4,29 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52a1c0c9-81eb-450c-b1f2-0ea5d18cce46" name="Changes" comment="">
-
+    <list default="true" id="0b553650-1b20-44da-9593-5dd685f023d7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Decoration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Decoration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Flower.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Flower.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Sell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Sell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Ticket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/domain/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/domain/Tree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/Repo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/Repo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/Repository.java" afterDir="false" />
-
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Interface" />
-        <option value="Class" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -34,69 +26,27 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="workspaceImportEnabled" value="true" />
-      </MavenImportingSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="2Kjize1IUmdKK5C8mVQWmybBEWv" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2KoMnQcQnFB1wdNJQSYQcY27b8P" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "last_opened_file_path": "C:/Users/pauca/IntelliJ_repository/ItAcademy/Sprint3/Sprint3Task1TXT"
-
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.Main" />
-      <module name="Sprint3Task3Level1" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main" />
-      </list>
-    </recent_temporary>
-  </component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="52a1c0c9-81eb-450c-b1f2-0ea5d18cce46" name="Changes" comment="" />
-      <created>1674494661540</created>
+      <changelist id="0b553650-1b20-44da-9593-5dd685f023d7" name="Changes" comment="" />
+      <created>1674636649031</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1674494661540</updated>
+      <updated>1674636649031</updated>
     </task>
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>

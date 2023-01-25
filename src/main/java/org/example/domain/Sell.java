@@ -7,6 +7,12 @@ public class Sell {
 
     public Sell() {
     }
+
+    public Sell(int id, double totalPrice) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+    }
+
     public int getId() {
         return id;
     }

@@ -4,12 +4,12 @@ public class Flower extends Product {
 
     private String color;
 
-    public Flower(String name, int price, int quantity, String color) {
+    public Flower(String name, double price, int quantity, String color) {
         super(name, price, quantity);
         this.color = color;
     }
 
-    public Flower(int id, String name, int price, int quantity, String color) {
+    public Flower(int id, String name, double price, int quantity, String color) {
         super(id, name, price, quantity);
         this.color = color;
     }
