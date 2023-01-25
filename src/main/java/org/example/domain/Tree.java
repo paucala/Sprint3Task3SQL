@@ -8,6 +8,11 @@ public class Tree extends Product{
         this.high = high;
     }
 
+    public Tree(int id, String name, int price, int quantity, double high) {
+        super(id, name, price, quantity);
+        this.high = high;
+    }
+
     public double getHigh() {
         return high;
     }
