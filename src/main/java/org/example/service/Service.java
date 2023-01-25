@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.domain.*;
+import org.example.repository.Repo;
 import org.example.repository.Repository;
 
 import java.io.IOException;
@@ -16,9 +17,9 @@ public class Service implements Serv {
      * @return List of all products
      */
     @Override
-    public List<Product> getAllProducts() throws IOException {
+    public List<Product> getAllProducts() {
         //region DEFINITION VARIABLES
-        List<Product> productList;
+        List<Product> productList = null;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -34,7 +35,7 @@ public class Service implements Serv {
             productList.addAll(repoCls.getAllProducts());
 
         }catch (Exception ex) {
-            throw ex;
+            //TODO control errors
         }
 
         //endregion ACTIONS
@@ -48,8 +49,8 @@ public class Service implements Serv {
     @Override
     public List<Ticket> getAllSells() {
         //region DEFINITION VARIABLES
-        List<Ticket> sellList;
-        Service sercCls;
+        List<Ticket> sellList = null;
+        Repository repoCls;
 
         //endregion DEFINITION VARIABLES
 
@@ -57,7 +58,7 @@ public class Service implements Serv {
         //region ACTIONS
         try{
             // INIT VARIABLES
-            sercCls = new Service();
+            repoCls = new Repository();
             sellList = new ArrayList<Ticket>();
 
 
@@ -65,7 +66,7 @@ public class Service implements Serv {
             sellList.addAll(repoCls.getAllSells());
 
         }catch(Exception ex) {
-            throw ex;
+            //TODO control errors
         }
         //endregion ACTIONS
 
@@ -75,7 +76,7 @@ public class Service implements Serv {
     }
 
     @Override
-    public void createProduct(Product product) throws IOException {
+    public void createProduct(Product product) {
         //region DEFINITION VARIABLES
         Repository repoCls;
 
@@ -100,7 +101,7 @@ public class Service implements Serv {
 
 
         }catch(Exception ex){
-            throw ex;
+            //TODO control errors
         }
 
         //endregion ACTIONS
@@ -116,7 +117,6 @@ public class Service implements Serv {
         //region DEFINITION VARIABLES
         Double totalPrice;
         List<ProductforSale> productsList;
-        Sell sell;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -126,7 +126,6 @@ public class Service implements Serv {
         try{
             // INIT VARIABLES
             productsList = new ArrayList<>();
-            sell = new Sell();
             repoCls = new Repository();
 
             // 1) CALCULATE TOTAL PRICE
@@ -144,7 +143,7 @@ public class Service implements Serv {
             repoCls.createTicket(ticket);
 
         }catch(Exception ex){
-            throw ex;
+            //TODO control erros
         }
 
         //endregion ACTIONS
@@ -169,11 +168,11 @@ public class Service implements Serv {
 
             // CALL REPOSITORY METHOD
 
-            sercCls.createSell(ticket);
+            repoCls.createSell(ticket);
 
 
         }catch(Exception ex){
-            throw ex;
+            //TODO control errors
         }
 
         //endregion ACTIONS
@@ -191,9 +190,8 @@ public class Service implements Serv {
     @Override
     public double sumSales() {
         //region DEFINITION VARIABLES
-
         List<Ticket> sellList = new ArrayList<Ticket>();
-        Service sercCls;
+        Repository repoCls;
 
 
         //endregion DEFINITION VARIABLES
@@ -212,7 +210,7 @@ public class Service implements Serv {
             }
 
         } catch (Exception ex) {
-            throw ex;
+            //TODO control errors
         }
         //endregion ACTIONS
 
