@@ -268,6 +268,7 @@ public class Repository implements Repo{
         writer.newLine();
         writer.write(newticket.toString());
         writer.close();
+        createSell(ticket);
     }
 
     @Override
