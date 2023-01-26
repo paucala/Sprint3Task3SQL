@@ -58,16 +58,23 @@ public class Service implements Serv {
             // INIT VARIABLES
             repoCls = new Repository();
 
+
             // CALL REPOSITORY METHODS
             if (product.getClass() == Decoration.class) {
-                repoCls.createDeco((Decoration) product);
-                resul = true;
+                if (repoCls.findbyName(product.getName(), "Decoration")) {
+                    repoCls.createDeco((Decoration) product);
+                    resul = true;
+                }
             } else if (product.getClass() == Flower.class) {
-                repoCls.createFlower((Flower) product);
-                resul = true;
+                if (repoCls.findbyName(product.getName(), "Flower")) {
+                    repoCls.createFlower((Flower) product);
+                    resul = true;
+                }
             } else if (product.getClass() == Tree.class) {
-                repoCls.createTree((Tree) product);
-                resul = true;
+                if (repoCls.findbyName(product.getName(), "Tree")) {
+                    repoCls.createTree((Tree) product);
+                    resul = true;
+                }
             } else {
                 //TODO Llançar error que la classe no es correcte
                 resul = false;
@@ -172,7 +179,7 @@ public class Service implements Serv {
     public List<Decoration> getDecorationList() throws GetMethodException {
         //region DEFINITION VARIABLES
         List<Decoration> decoList = null;
-        List<Product>productList = null;
+        List<Product> productList = null;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -189,8 +196,8 @@ public class Service implements Serv {
             productList.addAll(repoCls.getAllProducts());
 
             // 2) FIND DECORATION PRODUCT
-            for (Product p: productList) {
-                if(p.getClass() == Decoration.class){
+            for (Product p : productList) {
+                if (p.getClass() == Decoration.class) {
                     decoList.add((Decoration) p);
                 }
             }
@@ -216,7 +223,7 @@ public class Service implements Serv {
     public List<Flower> getFlowerList() throws GetMethodException {
         //region DEFINITION VARIABLES
         List<Flower> flowerList = null;
-        List<Product>productList = null;
+        List<Product> productList = null;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -233,8 +240,8 @@ public class Service implements Serv {
             productList.addAll(repoCls.getAllProducts());
 
             // 2) FIND DECORATION PRODUCT
-            for (Product p: productList) {
-                if(p.getClass() == Flower.class){
+            for (Product p : productList) {
+                if (p.getClass() == Flower.class) {
                     flowerList.add((Flower) p);
                 }
             }
@@ -255,13 +262,14 @@ public class Service implements Serv {
      * [0] és el stock de decorations
      * [1] és el stock de flowers
      * [2] és el stock d2 trees
+     *
      * @return la matriu de 3 integers.
      * @throws GetMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
      */
     @Override
     public int[] getStock() throws GetMethodException {
         //region DEFINITION VARIABLES
-        int[]results = new int[3];
+        int[] results = new int[3];
         List<Product> productList;
         Repository repoCls;
 
@@ -269,29 +277,29 @@ public class Service implements Serv {
 
 
         //region ACTIONS
-        try{
+        try {
             // INIT
             productList = new ArrayList<>();
             repoCls = new Repository();
-            results[0]=0;
-            results[1]=0;
-            results[2]=0;
+            results[0] = 0;
+            results[1] = 0;
+            results[2] = 0;
 
             // 1) GET STOCK
             productList.addAll(repoCls.getAllProducts());
 
             // 3) SUM ALL STOCK
-            for (Product p:productList) {
-                if(p.getClass() == Decoration.class){
-                    results[0]+=p.getQuantity();
-                }else if(p.getClass() == Flower.class){
-                    results[1]+=p.getQuantity();
-                }else if(p.getClass() == Tree.class){
-                    results[2]+=p.getQuantity();
+            for (Product p : productList) {
+                if (p.getClass() == Decoration.class) {
+                    results[0] += p.getQuantity();
+                } else if (p.getClass() == Flower.class) {
+                    results[1] += p.getQuantity();
+                } else if (p.getClass() == Tree.class) {
+                    results[2] += p.getQuantity();
                 }
             }
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
             //TODO control errors
             throw new GetMethodException(5);
         }
@@ -313,7 +321,7 @@ public class Service implements Serv {
     public List<Tree> getTreeList() throws GetMethodException {
         //region DEFINITION VARIABLES
         List<Tree> treeList = null;
-        List<Product>productList = null;
+        List<Product> productList = null;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -330,8 +338,8 @@ public class Service implements Serv {
             productList.addAll(repoCls.getAllProducts());
 
             // 2) FIND DECORATION PRODUCT
-            for (Product p: productList) {
-                if(p.getClass() == Tree.class){
+            for (Product p : productList) {
+                if (p.getClass() == Tree.class) {
                     treeList.add((Tree) p);
                 }
             }
@@ -377,13 +385,13 @@ public class Service implements Serv {
             if (product.getClass() == Decoration.class) {
                 repoCls.updateDeco((Decoration) product);
                 result = true;
-            }else if (product.getClass() == Flower.class) {
+            } else if (product.getClass() == Flower.class) {
                 repoCls.updateFlower((Flower) product);
                 result = true;
             } else if (product.getClass() == Tree.class) {
                 repoCls.updateTree((Tree) product);
                 result = true;
-            }else{
+            } else {
                 result = false;
             }
 
@@ -406,7 +414,7 @@ public class Service implements Serv {
     @Override
     public String init() {
         //region DEFINITION VARIABLES
-        String name = "";
+        String name = null;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -431,7 +439,8 @@ public class Service implements Serv {
     }
 
     /**
-     *  Mètode per sumar el valor de tot el stock de la floristeria.
+     * Mètode per sumar el valor de tot el stock de la floristeria.
+     *
      * @return el valor de la suma
      * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
      */
@@ -439,7 +448,7 @@ public class Service implements Serv {
     public double sumStock() throws SumMethodException {
         //region DEFINITION VARIABLES
         double result = 0;
-        List<Product>productList;
+        List<Product> productList;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -455,7 +464,7 @@ public class Service implements Serv {
             productList.addAll(repoCls.getAllProducts());
 
             // 2) SUM SCTOCK VALUE
-            for (Product p: productList) {
+            for (Product p : productList) {
                 result += p.getQuantity();
             }
 
@@ -474,6 +483,7 @@ public class Service implements Serv {
 
     /**
      * Mètode per sumar el valor de tots els productesque hi ha en el ticket.
+     *
      * @param ticket Necessita una classe ticket amb tota la info.
      * @return el valor del ticket.
      * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
@@ -510,6 +520,7 @@ public class Service implements Serv {
 
     /**
      * Mètode per sumar el valor de tots els tickets que s'han creat
+     *
      * @return el valor de la suma. NOTA! Si el valor retornat és
      * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
      */
