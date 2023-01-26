@@ -514,6 +514,14 @@ public class Service implements Serv {
 
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Mètode per sumar el valor de tots els tickets que s'han creat
+     * @return el valor de la suma. NOTA! Si el valor retornat és
+     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.  
+     */
+>>>>>>> a895279510745609014722da33a8366d61d20387
     @Override
     public double sumAllTickets() throws SumMethodException {
         //region DEFINITION VARIABLES
