@@ -2,11 +2,12 @@ package org.example.domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Ticket {
 
    private int id;
-   private ArrayList<ProductforSale> productforSales;
+   private List<ProductforSale> productforSales;
 
    private double totalPrice;
 
@@ -21,11 +22,14 @@ public class Ticket {
    }
 
 
-   public int getId() {
+   public Ticket(List<ProductforSale> productforSales) {
+	this.productforSales = productforSales;
+}
+public int getId() {
       return id;
    }
 
-   public ArrayList<ProductforSale> getProductforSales() {
+   public List<ProductforSale> getProductforSales() {
       return productforSales;
    }
 
