@@ -1,7 +1,7 @@
 package org.example.service;
 
-import org.example.domain.Product;
-import org.example.domain.Ticket;
+import org.example.domain.*;
+import org.example.exception.GetMethodException;
 import org.example.exception.SumMethodException;
 
 import java.io.IOException;
@@ -30,7 +30,13 @@ public interface Serv {
 
 
     //region METHODS: GET
-    List<Product> getAllProducts();
+    List<Product> getAllProducts() throws GetMethodException;
+
+    List<Decoration> getDecorationList() throws GetMethodException;
+
+    List<Flower> getFlowerList() throws GetMethodException;
+
+    List<Tree> getTreeList() throws GetMethodException;
 
     //endregion METHODS: GET
 
