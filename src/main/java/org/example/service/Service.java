@@ -8,12 +8,97 @@ import org.example.repository.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.XMLFormatter;
+import java.util.stream.Collectors;
 
 public class Service implements Serv {
 
+
+    //region METHODS: CHECK
+
+    @Override
+    public boolean checkStock(ProductforSale proSale) {
+        //region DEFINITION VARIABLES
+        boolean resul = false, contin = false;
+        int i = 0;
+        List<Decoration> decoList;
+        List<Flower> flowerList;
+        List<Tree> treeList;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        try {
+            // 1) GET ALL PRODUCTS OF SAME TYPE
+            if (proSale.getProduct().getClass() == Decoration.class) {
+                decoList = new ArrayList<>();
+                decoList.addAll(getDecoProducts());
+
+                // 2) CHECK PRODUCT STOCK
+                while (i < decoList.size() || !contin) {
+                    if (decoList.get(i).getId() == proSale.getProduct().getId()) {
+                        contin = true;
+                        if (proSale.getQuantity() < decoList.get(i).getQuantity()) {
+                            resul = true;
+                        } else {
+                            resul = false;
+                        }
+                    }
+                    i++;
+                }
+            } else if (proSale.getProduct().getClass() == Flower.class) {
+                flowerList = new ArrayList<>();
+                flowerList.addAll(getFlowerProducts());
+
+                // 2) CHECK PRODUCT STOCK
+                while (i < flowerList.size() || !contin) {
+                    if (flowerList.get(i).getId() == proSale.getProduct().getId()) {
+                        contin = true;
+                        if (proSale.getQuantity() < flowerList.get(i).getQuantity()) {
+                            resul = true;
+                        } else {
+                            resul = false;
+                        }
+                    }
+                    i++;
+                }
+            } else if (proSale.getProduct().getClass() == Tree.class) {
+                treeList = new ArrayList<>();
+                treeList.addAll(getTreeProducts());
+
+                // 2) CHECK PRODUCT STOCK
+                while (i < treeList.size() || !contin) {
+                    if (treeList.get(i).getId() == proSale.getProduct().getId()) {
+                        contin = true;
+                        if (proSale.getQuantity() < treeList.get(i).getQuantity()) {
+                            resul = true;
+                        } else {
+                            resul = false;
+                        }
+                    }
+                    i++;
+                }
+            }
+
+        } catch (Exception ex) {
+            resul = false;
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+        return resul;
+    }
+
+    //nedregion METHODS: CHECK
+
+
     //region METHODS: CREATE
+
     @Override
     public void createFlowerShop(String name) {
         //region DEFINITION VARIABLES
@@ -38,12 +123,7 @@ public class Service implements Serv {
 
     }
 
-    /**
-     * Metode per crear un nou tipus de producte, de qualsevol mena.
-     *
-     * @param product Necessita una classe del tipus de producte que s'ha de crear.
-     * @return false=> No s'ha pogut crear el producte; true => s'ha creat el producte correctament
-     */
+
     @Override
     public boolean createProduct(Product product) {
         //region DEFINITION VARIABLES
@@ -57,7 +137,6 @@ public class Service implements Serv {
         try {
             // INIT VARIABLES
             repoCls = new Repository();
-
 
             // CALL REPOSITORY METHODS
             if (product.getClass() == Decoration.class) {
@@ -76,7 +155,6 @@ public class Service implements Serv {
                     resul = true;
                 }
             } else {
-                //TODO Llançar error que la classe no es correcte
                 resul = false;
             }
 
@@ -115,7 +193,6 @@ public class Service implements Serv {
 
             result = true;
         } catch (Exception ex) {
-            //TODO control erros
             result = false;
         }
 
@@ -131,13 +208,6 @@ public class Service implements Serv {
 
 
     //region METHODS: GET
-
-    /**
-     * Mètode per aconseguir la llista de tots els productes
-     *
-     * @return Llista de tots els productes. Si es retorna un null, vol dir que hi hagut.
-     * @throws GetMethodException
-     */
     @Override
     public List<Product> getAllProducts() throws GetMethodException {
         //region DEFINITION VARIABLES
@@ -169,18 +239,11 @@ public class Service implements Serv {
 
     }
 
-    /**
-     * Mètode per aconseguir la llista de totes les decoracions.
-     *
-     * @return La llista de totes les decoracions. Si es retorna un null, vol dir que hi hagut.
-     * @throws GetMethodException
-     */
+
     @Override
     public List<Decoration> getDecorationList() throws GetMethodException {
         //region DEFINITION VARIABLES
-        List<Decoration> decoList = null;
-        List<Product> productList = null;
-        Repository repoCls;
+        List<Decoration> decoList;
 
         //endregion DEFINITION VARIABLES
 
@@ -188,22 +251,12 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
             decoList = new ArrayList<>();
-            productList = new ArrayList<>();
 
-            // 1) CALL REPOSITORY METHOD
-            productList.addAll(repoCls.getAllProducts());
-
-            // 2) FIND DECORATION PRODUCT
-            for (Product p : productList) {
-                if (p.getClass() == Decoration.class) {
-                    decoList.add((Decoration) p);
-                }
-            }
+            // GET DECORATION PRODUCTS
+            decoList.addAll(getDecoProducts());
 
         } catch (Exception ex) {
-            //TODO control errors
             throw new GetMethodException(2);
         }
         //endregion ACTIONS
@@ -213,18 +266,11 @@ public class Service implements Serv {
         return decoList;
     }
 
-    /**
-     * Mètode per aconseguir la llista de totes les flors.
-     *
-     * @return La llista de totes les flors. Si es retorna un null, vol dir que hi hagut.
-     * @throws GetMethodException
-     */
+
     @Override
     public List<Flower> getFlowerList() throws GetMethodException {
         //region DEFINITION VARIABLES
-        List<Flower> flowerList = null;
-        List<Product> productList = null;
-        Repository repoCls;
+        List<Flower> flowerList;
 
         //endregion DEFINITION VARIABLES
 
@@ -232,40 +278,23 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
-            flowerList = new ArrayList<Flower>();
-            productList = new ArrayList<>();
+            flowerList = new ArrayList<>();
 
-            // 1) CALL REPOSITORY METHOD
-            productList.addAll(repoCls.getAllProducts());
-
-            // 2) FIND DECORATION PRODUCT
-            for (Product p : productList) {
-                if (p.getClass() == Flower.class) {
-                    flowerList.add((Flower) p);
-                }
-            }
+            // GET FLOWERS PRODUCTS
+            flowerList.addAll(getFlowerProducts());
 
         } catch (Exception ex) {
-            //TODO control errors
             throw new GetMethodException(3);
         }
+
         //endregion ACTIONS
 
 
         // OUT
         return flowerList;
+
     }
 
-    /**
-     * Mètode que retorna una matriu de 3 integers amb el stock de cada element, on...
-     * [0] és el stock de decorations
-     * [1] és el stock de flowers
-     * [2] és el stock d2 trees
-     *
-     * @return la matriu de 3 integers.
-     * @throws GetMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
     @Override
     public int[] getStock() throws GetMethodException {
         //region DEFINITION VARIABLES
@@ -311,18 +340,10 @@ public class Service implements Serv {
         return results;
     }
 
-    /**
-     * Mètode per aconseguir la llista de tots els arbres.
-     *
-     * @return La llista de tots els arbres. Si es retorna un null, vol dir que hi hagut.
-     * @throws GetMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
     @Override
     public List<Tree> getTreeList() throws GetMethodException {
         //region DEFINITION VARIABLES
-        List<Tree> treeList = null;
-        List<Product> productList = null;
-        Repository repoCls;
+        List<Tree> treeList;
 
         //endregion DEFINITION VARIABLES
 
@@ -330,19 +351,10 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
-            treeList = new ArrayList<Tree>();
-            productList = new ArrayList<>();
+            treeList = new ArrayList<>();
 
-            // 1) CALL REPOSITORY METHOD
-            productList.addAll(repoCls.getAllProducts());
-
-            // 2) FIND DECORATION PRODUCT
-            for (Product p : productList) {
-                if (p.getClass() == Tree.class) {
-                    treeList.add((Tree) p);
-                }
-            }
+            // GET TREE PRODUCTS
+            treeList.addAll(getTreeProducts());
 
         } catch (Exception ex) {
             //TODO control errors
@@ -354,6 +366,7 @@ public class Service implements Serv {
 
         // OUT
         return treeList;
+
     }
 
     //endregion METHODS: GET
@@ -361,16 +374,10 @@ public class Service implements Serv {
 
     //region METHODS: UPDATE
 
-    /**
-     * Mètode per actualitzar la info d'un producte.
-     *
-     * @param product Necessita la classe del producte que s'ha de modificar.
-     * @return false = hi hagut algun error; true = tot ha sortit bé.
-     */
     @Override
     public boolean updateProduct(Product product) {
         //region DEFINITION VARIABLES
-        boolean result = false;
+        boolean result;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -411,6 +418,7 @@ public class Service implements Serv {
 
 
     //region METHODS: OTHERS (INIT, SUM,...)
+
     @Override
     public String init() {
         //region DEFINITION VARIABLES
@@ -431,19 +439,15 @@ public class Service implements Serv {
         } catch (Exception ex) {
             //TODO control errors
         }
+
         //endregion ACTIONS
 
 
         // OUT
         return name;
+
     }
 
-    /**
-     * Mètode per sumar el valor de tot el stock de la floristeria.
-     *
-     * @return el valor de la suma
-     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
     @Override
     public double sumStock() throws SumMethodException {
         //region DEFINITION VARIABLES
@@ -469,8 +473,6 @@ public class Service implements Serv {
             }
 
         } catch (Exception ex) {
-            //TODO control errors
-            result = 0;
             throw new SumMethodException(3);
         }
 
@@ -481,13 +483,6 @@ public class Service implements Serv {
         return result;
     }
 
-    /**
-     * Mètode per sumar el valor de tots els productesque hi ha en el ticket.
-     *
-     * @param ticket Necessita una classe ticket amb tota la info.
-     * @return el valor del ticket.
-     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
     @Override
     public double sumTicket(Ticket ticket) throws SumMethodException {
         //region DEFINITION VARIABLES
@@ -516,14 +511,9 @@ public class Service implements Serv {
 
         // OUT
         return result;
+
     }
 
-    /**
-     * Mètode per sumar el valor de tots els tickets que s'han creat
-     *
-     * @return el valor de la suma. NOTA! Si el valor retornat és
-     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
     @Override
     public double sumAllTickets() throws SumMethodException {
         //region DEFINITION VARIABLES
@@ -549,7 +539,6 @@ public class Service implements Serv {
             }
 
         } catch (Exception ex) {
-            //TODO control errors
             throw new SumMethodException(1);
         }
 
@@ -564,10 +553,126 @@ public class Service implements Serv {
     //endregion METHODS: OTHERS (SUM,...)
 
 
-    //region AUXILARY METHODS
+    //region PRIVATE METHODS
+
+    /**
+     * Mètode que retorna tots els prodcutes tipus Decoration.
+     *
+     * @return Tipus List<Decoration>. La llista amb els productes tipus Decoration.
+     * @throws IOException En el cas que hi hagi algun error, saltarà aquesta execpció.
+     */
+    private List<Decoration> getDecoProducts() throws IOException {
+        //region DEFINITION VARIABLES
+        List<Decoration> decoList;
+        List<Product> productList;
+        Repository repoCls;
+
+        //endregion DEFINITION VARIABLES
 
 
-    //endregion AUXILARY METHODS
+        //region ACTIONS
+        // INIT VARIABLES
+        decoList = new ArrayList<>();
+        productList = new ArrayList<>();
+        repoCls = new Repository();
+
+        // 1) GET ALL PRODUCTS
+        productList.addAll(repoCls.getAllProducts());
+
+        // 2) FIND DECORATION PRODUCTS
+        for (Product p : productList) {
+            if (p.getClass() == Decoration.class) {
+                decoList.add((Decoration) p);
+            }
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+        return decoList;
+
+    }
+
+    /**
+     * Mètode que retorna tots els prodcutes tipus Flower.
+     *
+     * @return Tipus List<Flower>. La llista amb els productes tipus Flower.
+     * @throws IOException En el cas que hi hagi algun error, saltarà aquesta execpció.
+     */
+    private List<Flower> getFlowerProducts() throws IOException {
+        //region DEFINITION VARIABLES
+        List<Flower> flowerList;
+        List<Product> productList;
+        Repository repoCls;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        // INIT VARIABLES
+        flowerList = new ArrayList<>();
+        productList = new ArrayList<>();
+        repoCls = new Repository();
+
+        // 1) GET ALL PRODUCTS
+        productList.addAll(repoCls.getAllProducts());
+
+        // 2) FIND DECORATION PRODUCTS
+        for (Product p : productList) {
+            if (p.getClass() == Flower.class) {
+                flowerList.add((Flower) p);
+            }
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+        return flowerList;
+
+    }
+
+    /**
+     * Mètode que retorna tots els prodcutes tipus Tree.
+     *
+     * @return Tipus List<Decoration>. La llista amb els productes tipus Tree.
+     * @throws IOException En el cas que hi hagi algun error, saltarà aquesta execpció.
+     */
+    private List<Tree> getTreeProducts() throws IOException {
+        //region DEFINITION VARIABLES
+        List<Tree> treeList;
+        List<Product> productList;
+        Repository repoCls;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        // INIT VARIABLES
+        treeList = new ArrayList<>();
+        productList = new ArrayList<>();
+        repoCls = new Repository();
+
+        // 1) GET ALL PRODUCTS
+        productList.addAll(repoCls.getAllProducts());
+
+        // 2) FIND DECORATION PRODUCTS
+        for (Product p : productList) {
+            if (p.getClass() == Tree.class) {
+                treeList.add((Tree) p);
+            }
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+        return treeList;
+
+    }
+
+    //endregion PRIVATE METHODS
 
 
 }
