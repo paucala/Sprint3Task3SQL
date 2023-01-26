@@ -34,6 +34,7 @@ public class Main {
 		shopName = service.init();
 		if (shopName == null) {
 			shopName = captureString("Insert Flower Shop name");
+			service.createFlowerShop(shopName);
 		}
 
 		System.out.println("\n" + "Bienvenido al sistema de gestion de Floristeria " + shopName + "\n");

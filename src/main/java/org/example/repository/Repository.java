@@ -396,11 +396,13 @@ public class Repository implements Repo{
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line;
         int id = 0;
+        reader.readLine();
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(";");
             id = Integer.valueOf(parts[0]);
         }
-        return id++;
+        id++;
+        return id;
     }
 
     //endregion METODOS AUXILIARES
