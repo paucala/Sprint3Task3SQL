@@ -10,6 +10,7 @@ import org.example.domain.Decoration;
 import org.example.domain.Flower;
 import org.example.domain.Product;
 import org.example.domain.ProductforSale;
+import org.example.domain.Ticket;
 import org.example.domain.Tree;
 import org.example.exception.GetMethodException;
 import org.example.exception.SumMethodException;
@@ -285,8 +286,9 @@ public class Main {
 			}
 			System.out.println("\n" + "Total ammount: " + totalAmmount + "\n");
 
-			// service.createTicket(ProductforSale); TODO verificar el parámetro que le paso
-			// a servicio
+			Ticket ticket = new Ticket(ticketDetail);
+			service.createTicket(ticket);
+			
 			mainMenu();
 		}
 
