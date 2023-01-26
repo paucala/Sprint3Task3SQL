@@ -439,9 +439,7 @@ public class Service implements Serv {
     public double sumStock() throws SumMethodException {
         //region DEFINITION VARIABLES
         double result = 0;
-        List<Decoration> decoList;
-        List<Flower> flowersList;
-        List<Tree> treeList;
+        List<Product>productList;
         Repository repoCls;
 
         //endregion DEFINITION VARIABLES
@@ -450,8 +448,16 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VALUES
-            decoList = new ArrayList<>();
+            productList = new ArrayList<>();
+            repoCls = new Repository();
 
+            /// 1) GET PRODCUTS
+            productList.addAll(repoCls.getAllProducts());
+
+            // 2) SUM SCTOCK VALUE
+            for (Product p: productList) {
+                result += p.getQuantity();
+            }
 
         } catch (Exception ex) {
             //TODO control errors
@@ -505,7 +511,7 @@ public class Service implements Serv {
     /**
      * Mètode per sumar el valor de tots els tickets que s'han creat
      * @return el valor de la suma. NOTA! Si el valor retornat és
-     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.  
+     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
      */
     @Override
     public double sumAllTickets() throws SumMethodException {
