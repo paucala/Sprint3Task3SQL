@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-
 import org.example.domain.Decoration;
 import org.example.domain.Flower;
 import org.example.domain.Product;
@@ -21,8 +20,7 @@ public class Main {
 	private static Scanner inputKey;
 	private static String shopName;
 	private static List<Product> products = new ArrayList<>();
-	private static ServicePruebas servicePruebas = new ServicePruebas();
-	
+
 	public static void main(String[] args) {
 
 		wellcome();
@@ -31,7 +29,7 @@ public class Main {
 	public static void wellcome() {
 
 		service = new Service();
-		shopName = "Floreria"; // service.init(); // sacar el harcodeo cuando haga la integracion
+		shopName = service.init();
 		if (shopName.isEmpty()) {
 			shopName = captureString("Insert Flower Shop name");
 		}
@@ -61,11 +59,11 @@ public class Main {
 		}
 
 		/*
-		 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Stock menues
-		 * <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Stock menues <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		 */
 
 	}
+
 	public static void productMenu() {
 		System.out.println("\n" + "** Product menu **" + "\n");
 		System.out.println("1. Create product");
@@ -145,19 +143,17 @@ public class Main {
 		int quantity = captureNumber("quantity: ");
 		Product decoration = new Decoration(name, price, quantity, material);
 
-		int productExist = servicePruebas.createProduct(decoration); //// linea de prueba para eliminar
-		
-//			int prodExist = service.createProduct(decoration);			// TODO: Solucionar con SERVICE
+		boolean productExist = service.createProduct(decoration);
 
-			if(productExist == 1){
+		if (!productExist) {
 
-		System.out.println("The product has been created" + "\n");
-		}else if (productExist == 0) {
-		System.out.println("The product already exists" + "\n");
-		}else {
-		System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
+			System.out.println("The product has been created" + "\n");
+		} else if (productExist) {
+			System.out.println("The product already exists" + "\n");
+		} else {
+			System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
 		}
-			mainMenu();
+		mainMenu();
 	}
 
 	private static void flowerCreate() {
@@ -169,16 +165,16 @@ public class Main {
 		int quantity = captureNumber("quantity: ");
 
 		Product flower = new Flower(name, price, quantity, color);
-//		int prodExist = service.createProduct(flower);                   // TODO: Solucionar con SERVICE
+		boolean productExist = service.createProduct(flower);
 
-//		if(productExist == 1){
+		if (!productExist) {
 
-		System.out.println("The product has been created" + "\n");
-//	}else if (productExist == 0) {
-		System.out.println("The product already exists" + "\n");
-//	}else {
-		System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
-//	}
+			System.out.println("The product has been created" + "\n");
+		} else if (productExist) {
+			System.out.println("The product already exists" + "\n");
+		} else {
+			System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
+		}
 		mainMenu();
 
 	}
@@ -192,23 +188,22 @@ public class Main {
 		int quantity = captureNumber("quantity: ");
 
 		Product tree = new Tree(name, price, quantity, high);
-//		int prodExist = service.createProduct(tree);              // TODO: Solucionar con SERVICE
+		boolean productExist = service.createProduct(tree);
 
-//		if(productExist == 1){
+		if (!productExist) {
 
-		System.out.println("The product has been created" + "\n");
-//	}else if (productExist == 0) {
-		System.out.println("The product already exists" + "\n");
-//	}else {
-		System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
-//	}
+			System.out.println("The product has been created" + "\n");
+		} else if (productExist) {
+			System.out.println("The product already exists" + "\n");
+		} else {
+			System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
+		}
 		mainMenu();
 
 	}
 
 	/*
-	 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Invoice menues
-	 * <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Invoice menues  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	 */
 
 	public static void invoiceMenu() {
@@ -238,8 +233,8 @@ public class Main {
 		Integer selection = 0;
 		int order = 0;
 		double totalAmmount = 0;
-		products = servicePruebas.getAllProducts();  // Cambiar luego de testear  
-		// products = service.getAllProducts();  //
+		
+		products = service.getAllProducts(); //
 		Map<Integer, Product> productsToShow = new HashMap<>();
 		List<ProductforSale> ticketDetail = new ArrayList<>();
 		System.out.println("\n" + "** Create ticket **" + "\n");
@@ -253,34 +248,35 @@ public class Main {
 
 		do {
 			selection = captureNumber("Select product from list or 0 to finish: " + "\n");
-			if(selection <= products.size() && selection > 0 ) {
+			if (selection <= products.size() && selection > 0) {
 				int productQuantity = captureNumber("Quantity: " + "\n");
 				Product productSelected = productsToShow.get(selection);
 				ProductforSale productForSale = new ProductforSale(productSelected, productQuantity);
 				ticketDetail.add(productForSale);
 				totalAmmount = totalAmmount + productSelected.getPrice() * productQuantity;
-			}else {
-			System.out.println("Product not included in the list, try again");
+			} else {
+				System.out.println("Product not included in the list, try again");
 			}
 		} while (selection != 0);
 
-		if(!ticketDetail.isEmpty()) {
-		
+		if (!ticketDetail.isEmpty()) {
+
 			System.out.println("\n" + "** Ticket detail **" + "\n");
-			
+
 			for (ProductforSale productforSale : ticketDetail) {
-				System.out.println(productforSale.getProduct() + " " + productforSale.getQuantity()); 
+				System.out.println(productforSale.getProduct() + " " + productforSale.getQuantity());
 			}
 			System.out.println("\n" + "Total ammount: " + totalAmmount + "\n");
-			
-			// service.createTicket(ProductforSale);  TODO verificar el parámetro que le paso a servicio		
+
+			// service.createTicket(ProductforSale); TODO verificar el parámetro que le paso
+			// a servicio
 			mainMenu();
 		}
-		
+
 	}
 
 	private static void invoiceSum() {
-		
+
 		System.out.println("\n" + "** Total sales ammount:  **" + "\n");
 		System.out.println(service.sumSell());
 		System.out.println("\n");
@@ -288,8 +284,7 @@ public class Main {
 
 	}
 
-	// Metodos auxiliares para el ingreso de datos numericos y alfanumericos por
-	// keyboard
+	// Metodos auxiliares para el ingreso de datos numericos y alfanumericos por keyboard
 
 	public static String captureString(String mensaje) {
 		inputKey = new Scanner(System.in);
