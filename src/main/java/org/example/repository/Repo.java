@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface Repo {
     boolean findbyId(int id, String type) throws IOException;
-    boolean findbyName(String name) throws IOException;
+
+    boolean findbyName(String name, String type) throws IOException;
+
     List<Product> getAllProducts() throws IOException;
     List<Ticket> getAllSells() throws IOException;
     Product getById(int id, String type) throws IOException;
@@ -23,9 +25,5 @@ public interface Repo {
     //Devuelve un String con el nombre del archivo o un empty si no existe
     String init();
     void createFlowerShop(String name) throws IOException;
-
-    void updateTree(Tree tree);
-    void updateFlower(Flower flower);
-    void updateDeco(Decoration decoration);
 
 }
