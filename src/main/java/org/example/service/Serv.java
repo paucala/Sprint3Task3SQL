@@ -36,6 +36,8 @@ public interface Serv {
 
     List<Flower> getFlowerList() throws GetMethodException;
 
+    int[] getStock() throws GetMethodException;
+
     List<Tree> getTreeList() throws GetMethodException;
 
     //endregion METHODS: GET
