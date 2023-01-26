@@ -14,7 +14,8 @@ public class Service implements Serv {
     //region ATTRIBUTES
     private static Repository repoCls;
 
-    //region ATTRIBUTES
+    //endregion ATTRIBUTES
+
 
     //region METHODS: CHECK
 
@@ -426,7 +427,7 @@ public class Service implements Serv {
 
             // 2) SUM SCTOCK VALUE
             for (Product p : productList) {
-                result += p.getQuantity();
+                result += p.getQuantity() * p.getPrice();
             }
 
         } catch (Exception ex) {
@@ -443,19 +444,18 @@ public class Service implements Serv {
     @Override
     public double sumTicket(Ticket ticket) throws SumMethodException {
         //region DEFINITION VARIABLES
-        double result;
-        List<ProductforSale> productsList;
+        double result = 0.0;
 
         //endregion DEFINITION VARIABLES
 
 
         //region ACTIONS
         try {
-            // INIT VARIABLES
-            productsList = new ArrayList<>(ticket.getProductforSales());
-
             // SUM VALUES
-            result = productsList.stream().mapToDouble(ProductforSale::getPrice).sum();
+            for (ProductforSale p : ticket.getProductforSales()) {
+                result += p.getQuantity() * p.getPrice();
+            }
+
 
         } catch (Exception ex) {
             throw new SumMethodException(2);
