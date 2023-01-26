@@ -23,11 +23,15 @@ public class Repository implements Repo{
     //Metodes d'inici per esbrinar si ja existeix una base de dades i en cas negatiu imprimir el nom de la floristeria com a titol
     @Override
     public String init() {
-        Path path = Path.of("\\DataBase");
+        Path path = Path.of("DataBase");
         String filename = null;
         if (Files.isDirectory(path)) {
             try (Stream<Path> entries = Files.list(path)) {
-                filename = entries.toString();
+                BufferedReader reader = new BufferedReader(new FileReader(flowershopTrees));
+                String line =  reader.readLine();
+                String[] parts = line.split(":");
+                String[] parts2 = parts[1].split("/");
+                filename = parts2[0];
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -392,11 +396,13 @@ public class Repository implements Repo{
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line;
         int id = 0;
+        reader.readLine();
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(";");
             id = Integer.valueOf(parts[0]);
         }
-        return id++;
+        id++;
+        return id;
     }
 
     //endregion METODOS AUXILIARES

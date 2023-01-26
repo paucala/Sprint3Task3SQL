@@ -11,6 +11,8 @@ import org.example.domain.Flower;
 import org.example.domain.Product;
 import org.example.domain.ProductforSale;
 import org.example.domain.Tree;
+import org.example.exception.GetMethodException;
+import org.example.exception.SumMethodException;
 import org.example.service.Serv;
 import org.example.service.Service;
 
@@ -30,11 +32,12 @@ public class Main {
 
 		service = new Service();
 		shopName = service.init();
-		if (shopName.isEmpty()) {
+		if (shopName == null) {
 			shopName = captureString("Insert Flower Shop name");
+			service.createFlowerShop(shopName);
 		}
 
-		System.out.println("Bienvenido al sistema de gestion de Floristeria" + shopName + "\n");
+		System.out.println("\n" + "Bienvenido al sistema de gestion de Floristeria " + shopName + "\n");
 		mainMenu();
 	}
 
@@ -59,7 +62,8 @@ public class Main {
 		}
 
 		/*
-		 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Stock menues <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Stock menues
+		 * <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		 */
 
 	}
@@ -92,18 +96,30 @@ public class Main {
 
 	private static void productSum() {
 
-		double totalStock = service.sumStock();
-		System.out.println("\n" + "** Stock ammount menu **" + "\n");
-		System.out.println("The stock ammount is: " + totalStock + "\n");
+		double totalStock;
+		try {
+			totalStock = service.sumStock();
+			System.out.println("\n" + "** Stock ammount menu **" + "\n");
+			System.out.println("The stock ammount is: " + totalStock + "\n");
+		} catch (SumMethodException e) {
+			System.err.println("\n" + "There has been an error, please try again" + "\n");
+		}
+
 		mainMenu();
 	}
 
 	private static void productList() {
 
 		System.out.println("\n" + "** Stock list **" + "\n");
-		products = service.getAllProducts();
+		try {
+			products = service.getAllProducts();
+		
 		products.forEach(System.out::println);
 		System.out.println("\n");
+		} catch (GetMethodException e) {
+			System.err.println("\n" + "There has been an error, please try again" + "\n");
+		}
+		
 		mainMenu();
 	}
 
@@ -136,7 +152,7 @@ public class Main {
 
 	private static void decorationCreate() {
 
-		System.out.println("Create decoration product " + "\n");
+		System.out.println("\n" + "Create decoration product " + "\n");
 		String name = captureString("Name: ");
 		String material = captureString("Material: ");
 		double price = captureDouble("price: ");
@@ -145,20 +161,19 @@ public class Main {
 
 		boolean productExist = service.createProduct(decoration);
 
-		if (!productExist) {
-
-			System.out.println("The product has been created" + "\n");
-		} else if (productExist) {
-			System.out.println("The product already exists" + "\n");
+		if (productExist) {
+			System.out.println("\n" + "The product has been created" + "\n");
+		} else if (!productExist) {
+			System.out.println("\n" + "The product already exists" + "\n");
 		} else {
-			System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
+			System.out.println("\n" + "Hubo un problema al crear el producto. Por favor verifique el stock." + "\n");
 		}
 		mainMenu();
 	}
 
 	private static void flowerCreate() {
 
-		System.out.println("Create product flower" + "\n");
+		System.out.println("\n" + "Create product flower" + "\n");
 		String name = captureString("Name: ");
 		String color = captureString("Color: ");
 		double price = captureDouble("price: ");
@@ -167,13 +182,12 @@ public class Main {
 		Product flower = new Flower(name, price, quantity, color);
 		boolean productExist = service.createProduct(flower);
 
-		if (!productExist) {
-
-			System.out.println("The product has been created" + "\n");
-		} else if (productExist) {
-			System.out.println("The product already exists" + "\n");
+		if (productExist) {
+			System.out.println("\n" + "The product has been created" + "\n");
+		} else if (!productExist) {
+			System.out.println("\n" + "The product already exists" + "\n");
 		} else {
-			System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
+			System.out.println("\n" + "Hubo un problema al crear el producto. Por favor verifique el stock." + "\n");
 		}
 		mainMenu();
 
@@ -181,7 +195,7 @@ public class Main {
 
 	private static void treeCreate() {
 
-		System.out.println("Create product tree " + "\n");
+		System.out.println("\n" + "Create product tree " + "\n");
 		String name = captureString("name: ");
 		double high = captureDouble("heigth: ");
 		double price = captureDouble("price: ");
@@ -190,13 +204,12 @@ public class Main {
 		Product tree = new Tree(name, price, quantity, high);
 		boolean productExist = service.createProduct(tree);
 
-		if (!productExist) {
-
-			System.out.println("The product has been created" + "\n");
-		} else if (productExist) {
-			System.out.println("The product already exists" + "\n");
+		if (productExist) {
+			System.out.println("\n" + "The product has been created" + "\n");
+		} else if (!productExist) {
+			System.out.println("\n" + "The product already exists" + "\n");
 		} else {
-			System.out.println("Hubo un problema al crear el producto. Por favor verifique el stock.");
+			System.out.println("\n" + "Hubo un problema al crear el producto. Por favor verifique el stock." + "\n");
 		}
 		mainMenu();
 
@@ -233,8 +246,12 @@ public class Main {
 		Integer selection = 0;
 		int order = 0;
 		double totalAmmount = 0;
-		
-		products = service.getAllProducts(); //
+
+		try {
+			products = service.getAllProducts();
+		} catch (GetMethodException e) {
+			System.err.println("\n" + "There has been an error, please try again" + "\n");
+		} 
 		Map<Integer, Product> productsToShow = new HashMap<>();
 		List<ProductforSale> ticketDetail = new ArrayList<>();
 		System.out.println("\n" + "** Create ticket **" + "\n");
@@ -277,9 +294,15 @@ public class Main {
 
 	private static void invoiceSum() {
 
+		try {
 		System.out.println("\n" + "** Total sales ammount:  **" + "\n");
-		System.out.println(service.sumSell());
+		System.out.println(service.sumAllTickets());
 		System.out.println("\n");
+
+		} catch (SumMethodException e) {
+			System.err.println("\n" + "There has been an error, please try again" + "\n");
+		}
+		
 		mainMenu();
 
 	}
