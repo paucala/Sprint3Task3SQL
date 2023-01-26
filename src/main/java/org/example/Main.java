@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+
 import org.example.domain.Decoration;
 import org.example.domain.Flower;
 import org.example.domain.Product;
@@ -65,7 +66,6 @@ public class Main {
 		 */
 
 	}
-
 	public static void productMenu() {
 		System.out.println("\n" + "** Product menu **" + "\n");
 		System.out.println("1. Create product");
