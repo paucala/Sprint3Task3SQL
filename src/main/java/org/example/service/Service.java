@@ -505,7 +505,7 @@ public class Service implements Serv {
     /**
      * Mètode per sumar el valor de tots els tickets que s'han creat
      * @return el valor de la suma. NOTA! Si el valor retornat és
-     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
+     * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.  
      */
     @Override
     public double sumAllTickets() throws SumMethodException {
