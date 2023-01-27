@@ -246,7 +246,7 @@ public class Main {
 	private static void invoiceCreate() {
 		Integer selection = 0;
 		int order = 0;
-		double totalAmmount = 0;
+		double totalAmount = 0;
 
 		try {
 			products = service.getAllProducts();
@@ -270,8 +270,22 @@ public class Main {
 				int productQuantity = captureNumber("Quantity: " + "\n");
 				Product productSelected = productsToShow.get(selection);
 				ProductforSale productForSale = new ProductforSale(productSelected, productQuantity);
+
+				boolean enoughStock = service.checkStock(productForSale);
+				if(selection <= products.size() && selection > 0){
+					if(enoughStock == false){
+						do{
+							System.out.println("Not enough stock. Please try again.");
+							productQuantity = captureNumber("Quantity: " + "\n");
+							productForSale.setQuantity(productQuantity);
+							enoughStock = service.checkStock(productForSale);
+						}while (enoughStock == false);
+					}
+				}
+
+
 				ticketDetail.add(productForSale);
-				totalAmmount = totalAmmount + productSelected.getPrice() * productQuantity;
+				totalAmount = totalAmount + productSelected.getPrice() * productForSale.getQuantity();
 			} else {
 				System.out.println("Product not included in the list, try again");
 			}
@@ -284,7 +298,7 @@ public class Main {
 			for (ProductforSale productforSale : ticketDetail) {
 				System.out.println(productforSale.getProduct() + " " + productforSale.getQuantity());
 			}
-			System.out.println("\n" + "Total ammount: " + totalAmmount + "\n");
+			System.out.println("\n" + "Total amount: " + totalAmount + "\n");
 
 			Ticket ticket = new Ticket(ticketDetail);
 			service.createTicket(ticket);
