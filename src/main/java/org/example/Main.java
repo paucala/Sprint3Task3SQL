@@ -44,10 +44,10 @@ public class Main {
 
 	public static void mainMenu() {
 
-		System.out.println("\n" + "** Main menu **" + "\n");
-		System.out.println("1. Product");
-		System.out.println("2. Invoice");
-		System.out.println("3. Exit");
+		System.out.println("\n" + "** Main menu **" + "\n" + "\n" +
+			"1. Product"+ "\n" +
+			"2. Invoice"+ "\n" +
+			"3. Exit"+ "\n");
 
 		int choice = captureNumber("Select task: " + "\n");
 
@@ -70,11 +70,11 @@ public class Main {
 	}
 
 	public static void productMenu() {
-		System.out.println("\n" + "** Product menu **" + "\n");
-		System.out.println("1. Create product");
-		System.out.println("2. List products");
-		System.out.println("3. Valuate stock");
-		System.out.println("4. Back");
+		System.out.println("\n" + "** Product menu **" + "\n" + "\n" +
+			"1. Create product" + "\n" +
+			"2. List products" + "\n" +
+			"3. Valuate stock" + "\n" +
+			"4. Back");
 
 		int choice = captureNumber("Select task: " + "\n");
 
@@ -309,7 +309,7 @@ public class Main {
 			System.out.println("\n" + "** Ticket detail **" + "\n");
 
 			for (ProductforSale productforSale : ticketDetail) {
-				System.out.println(productforSale.getProduct().getName() + " " + productforSale.getProduct().getPrice()  + " " + productforSale.getQuantity());
+				System.out.println("Product: " + productforSale.getProduct().getName() + " price: " + productforSale.getProduct().getPrice()  + " quantity: " + productforSale.getQuantity());
 			}
 			System.out.println("\n" + "Total amount: " + totalAmount + "\n");
 
@@ -324,12 +324,12 @@ public class Main {
 	private static void invoiceSum() {
 
 		try {
-		System.out.println("\n" + "** Total sales ammount:  **" + "\n");
+		System.out.println("\n" + "** Total sales amount:  **" + "\n");
 		System.out.println(service.sumAllTickets());
 		System.out.println("\n");
 
 		} catch (SumMethodException e) {
-			System.err.println("\n" + "There has been an error, please try again" + "\n");
+			System.err.println("\n" + "There has been an error getting total sales, please try again" + "\n");
 		}
 		
 		mainMenu();
