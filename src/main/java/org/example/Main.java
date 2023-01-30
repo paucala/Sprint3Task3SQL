@@ -222,10 +222,10 @@ public class Main {
 
 	public static void invoiceMenu() {
 
-		System.out.println("\n" + "** Invoice menu **" + "\n");
-		System.out.println("1. Create invoice");
-		System.out.println("2. Total ammount of sales");
-		System.out.println("3. Back");
+		System.out.println("\n" + "** Invoice menu **" + "\n" + "\n" +
+				"1. Create invoice"+ "\n" +
+				"2. Total ammount of sales" + "\n" +
+				"3. Back");
 
 		int choice = captureNumber("Select task: " + "\n");
 
@@ -258,11 +258,14 @@ public class Main {
 		System.out.println("\n" + "** Create ticket **" + "\n");
 		System.out.println("Products to include in ticket: " + "\n");
 
+		// No agrega a la lista los prods sin stock
 		for (Product product : products) {
-			order++;
-			productsToShow.put(order, product);
-			System.out.println("id: " + order + " name: " + product.getName() + " price: " + product.getPrice());
-		}
+			if(product.getQuantity() > 0) {
+				order++;
+				productsToShow.put(order, product);
+				System.out.println("id: " + order + " name: " + product.getName() + " price: " + product.getPrice() + " stock: " + product.getQuantity());
+			 }
+			}
 
 		do {
 			selection = captureNumber("Select product from list or 0 to finish: " + "\n");
@@ -283,9 +286,19 @@ public class Main {
 					}
 				}
 
+				// controlar si el prod esta repetido
+				
+				boolean noRepeat = service.checkExistOnTicket(ticketDetail, selection);
+					if(noRepeat == false) {
+						ticketDetail.add(productForSale);
+						totalAmount = totalAmount + productSelected.getPrice() * productForSale.getQuantity();					
+					} else {
+						System.out.println("The product already exists in the ticket.");
+					}
+					
+					
+				
 
-				ticketDetail.add(productForSale);
-				totalAmount = totalAmount + productSelected.getPrice() * productForSale.getQuantity();
 			} else {
 				System.out.println("Product not included in the list, try again");
 			}
@@ -296,7 +309,7 @@ public class Main {
 			System.out.println("\n" + "** Ticket detail **" + "\n");
 
 			for (ProductforSale productforSale : ticketDetail) {
-				System.out.println(productforSale.getProduct() + " " + productforSale.getQuantity());
+				System.out.println(productforSale.getProduct().getName() + " " + productforSale.getProduct().getPrice()  + " " + productforSale.getQuantity());
 			}
 			System.out.println("\n" + "Total amount: " + totalAmount + "\n");
 
