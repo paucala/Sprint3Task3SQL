@@ -41,7 +41,7 @@ public class Service implements Serv {
                 while (i < decoList.size() || !contin) {
                     if (decoList.get(i).getId() == proSale.getProduct().getId()) {
                         contin = true;
-                        resul = proSale.getQuantity() < decoList.get(i).getQuantity();
+                        resul = proSale.getQuantity() <= decoList.get(i).getQuantity();
                     }
                     i++;
                 }
@@ -52,7 +52,7 @@ public class Service implements Serv {
                 while (i < flowerList.size() || !contin) {
                     if (flowerList.get(i).getId() == proSale.getProduct().getId()) {
                         contin = true;
-                        resul = proSale.getQuantity() < flowerList.get(i).getQuantity();
+                        resul = proSale.getQuantity() <= flowerList.get(i).getQuantity();
                     }
                     i++;
                 }
@@ -63,7 +63,7 @@ public class Service implements Serv {
                 while (i < treeList.size() || !contin) {
                     if (treeList.get(i).getId() == proSale.getProduct().getId()) {
                         contin = true;
-                        resul = proSale.getQuantity() < treeList.get(i).getQuantity();
+                        resul = proSale.getQuantity() <= treeList.get(i).getQuantity();
                     }
                     i++;
                 }
@@ -95,7 +95,9 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
+            if(repoCls == null) {
+                repoCls = new Repository();
+            }
 
             // CALL REPOSITORY METHOD
             repoCls.createFlowerShop(name);
