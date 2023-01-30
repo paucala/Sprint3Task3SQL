@@ -97,8 +97,8 @@ public class Service implements Serv {
                     resul = true;
                 }
 
-                index = 0;
-            }while (exit != true);
+                index++;
+            }while (proSafeListIn.size() < index || exit != true);
 
 
         }catch (Exception ex){
