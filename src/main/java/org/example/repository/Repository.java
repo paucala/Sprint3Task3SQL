@@ -295,13 +295,15 @@ public class Repository implements Repo{
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopTrees));
         StringBuilder originalFileContent = new StringBuilder();
-        while (reader.readLine()  != null){
-            originalFileContent.append(reader.readLine().toString());
+        String line = null;
+        while ((line = reader.readLine())  != null){
+            originalFileContent.append(line + System.lineSeparator());
         }
         String oldline = getTreeString(tree);
         String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newtree.toString());
+        String modifiedFileContent2 = modifiedFileContent.replaceAll("", null);
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees));
-        writer.write(modifiedFileContent);
+        writer.write(modifiedFileContent2);
         writer.close();
 
     }
@@ -317,13 +319,15 @@ public class Repository implements Repo{
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopFlowers));
         StringBuilder originalFileContent = new StringBuilder();
-        while (reader.readLine()  != null){
-            originalFileContent.append(reader.readLine().toString());
+        String line = null;
+        while ((line = reader.readLine())  != null){
+            originalFileContent.append(line + System.lineSeparator());;
         }
         String oldline = getFlowerString(flower);
         String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newflower.toString());
+        String modifiedFileContent2 = modifiedFileContent.replaceAll("", null);
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopFlowers));
-        writer.write(modifiedFileContent);
+        writer.write(modifiedFileContent2);
         writer.close();
 
     }
@@ -339,13 +343,15 @@ public class Repository implements Repo{
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopDecorations));
         StringBuilder originalFileContent = new StringBuilder();
-        while (reader.readLine()  != null){
-            originalFileContent.append(reader.readLine().toString());
+        String line = null;
+        while ((line = reader.readLine())  != null){
+            originalFileContent.append(line + System.lineSeparator());;
         }
         String oldline = getDecoString(decoration);
         String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newdeco.toString());
+        String modifiedFileContent2 = modifiedFileContent.replaceAll("", null);
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopDecorations));
-        writer.write(modifiedFileContent);
+        writer.write(modifiedFileContent2);
         writer.close();
     }
     //endregion UPDATE
