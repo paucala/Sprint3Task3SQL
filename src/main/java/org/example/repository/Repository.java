@@ -294,14 +294,12 @@ public class Repository implements Repo{
         newtree.append(tree.getHigh());
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopTrees));
-        String currentReadingLine = reader.readLine();
-        String originalFileContent = "";
-        while (currentReadingLine != null) {
-            originalFileContent += currentReadingLine + System.lineSeparator();
-            currentReadingLine = reader.readLine();
+        StringBuilder originalFileContent = new StringBuilder();
+        while (reader.readLine()  != null){
+            originalFileContent.append(reader.readLine().toString());
         }
         String oldline = getTreeString(tree);
-        String modifiedFileContent = originalFileContent.replaceAll(oldline, newtree.toString());
+        String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newtree.toString());
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees));
         writer.write(modifiedFileContent);
         writer.close();
@@ -318,14 +316,12 @@ public class Repository implements Repo{
         newflower.append(flower.getColor());
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopFlowers));
-        String currentReadingLine = reader.readLine();
-        String originalFileContent = "";
-        while (currentReadingLine != null) {
-            originalFileContent += currentReadingLine + System.lineSeparator();
-            currentReadingLine = reader.readLine();
+        StringBuilder originalFileContent = new StringBuilder();
+        while (reader.readLine()  != null){
+            originalFileContent.append(reader.readLine().toString());
         }
         String oldline = getFlowerString(flower);
-        String modifiedFileContent = originalFileContent.replaceAll(oldline, newflower.toString());
+        String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newflower.toString());
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopFlowers));
         writer.write(modifiedFileContent);
         writer.close();
@@ -342,14 +338,12 @@ public class Repository implements Repo{
         newdeco.append(decoration.getMaterial());
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopDecorations));
-        String currentReadingLine = reader.readLine();
-        String originalFileContent = "";
-        while (currentReadingLine != null) {
-            originalFileContent += currentReadingLine + System.lineSeparator();
-            currentReadingLine = reader.readLine();
+        StringBuilder originalFileContent = new StringBuilder();
+        while (reader.readLine()  != null){
+            originalFileContent.append(reader.readLine().toString());
         }
         String oldline = getDecoString(decoration);
-        String modifiedFileContent = originalFileContent.replaceAll(oldline, newdeco.toString());
+        String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newdeco.toString());
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopDecorations));
         writer.write(modifiedFileContent);
         writer.close();
