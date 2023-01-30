@@ -268,7 +268,7 @@ public class Main {
 			}
 
 		do {
-			selection = captureNumber("Select product from list or 0 to finish: " + "\n");
+			selection = captureNumber("\n" + "Select product from list or 0 to finish: " + "\n");
 			if (selection <= products.size() && selection > 0) {
 				int productQuantity = captureNumber("Quantity: " + "\n");
 				Product productSelected = productsToShow.get(selection);
@@ -298,8 +298,8 @@ public class Main {
 					
 					
 				
-
-			} else {
+				//
+			} else if (selection > 0){
 				System.out.println("Product not included in the list, try again");
 			}
 		} while (selection != 0);
