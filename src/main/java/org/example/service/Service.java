@@ -80,6 +80,44 @@ public class Service implements Serv {
         return resul;
     }
 
+    /**
+     * Comprova si en la llsita de ProductfoSafe ja existeixun id
+     * @param proSafeListIn La llista de ProductforSafe on cercar el Id.
+     * @param idIn Un int amb el
+     * @return False = No existeix en la llista; True = existeix en la llista.
+     */
+    public boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, int idIn){
+        //region DEFINITION VARIABLES
+        boolean resul = false, exit = false;
+        int index = 0;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        try{
+            do{
+                if(proSafeListIn.get(index).getProduct().getId() == idIn ){
+                    exit =true;
+                    resul = true;
+                }
+
+                index = 0;
+            }while (exit != true);
+
+
+        }catch (Exception ex){
+
+        }
+        //endregion ACTIONS
+
+
+        // OUT
+        return resul;
+
+
+    }
+
     //endregion METHODS: CHECK
 
 
