@@ -18,6 +18,14 @@ public interface Serv {
      */
     boolean checkStock(ProductforSale proSale);
 
+    /**
+     * Comprova si en la llsita de ProductfoSafe ja existeixun id
+     * @param proSafeListIn La llista de ProductforSafe on cercar el Id.
+     * @param idIn Un int amb el
+     * @return False = No existeix en la llista; True = existeix en la llista.
+     */
+    boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, int idIn);
+
     //endregion METHODS: CHECK
 
 
