@@ -38,7 +38,7 @@ public class Service implements Serv {
                 decoList = new ArrayList<>(getDecoProducts());
 
                 // 2) CHECK PRODUCT STOCK
-                while (i < decoList.size() || !contin) {
+                while (i < decoList.size() && !contin) {
                     if (decoList.get(i).getId() == proSale.getProduct().getId()) {
                         contin = true;
                         resul = proSale.getQuantity() <= decoList.get(i).getQuantity();
@@ -49,7 +49,7 @@ public class Service implements Serv {
                 flowerList = new ArrayList<>(getFlowerProducts());
 
                 // 2) CHECK PRODUCT STOCK
-                while (i < flowerList.size() || !contin) {
+                while (i < flowerList.size() && !contin) {
                     if (flowerList.get(i).getId() == proSale.getProduct().getId()) {
                         contin = true;
                         resul = proSale.getQuantity() <= flowerList.get(i).getQuantity();
@@ -60,7 +60,7 @@ public class Service implements Serv {
                 treeList = new ArrayList<>(getTreeProducts());
 
                 // 2) CHECK PRODUCT STOCK
-                while (i < treeList.size() || !contin) {
+                while (i < treeList.size() && !contin) {
                     if (treeList.get(i).getId() == proSale.getProduct().getId()) {
                         contin = true;
                         resul = proSale.getQuantity() <= treeList.get(i).getQuantity();

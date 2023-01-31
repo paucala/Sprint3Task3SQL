@@ -43,19 +43,19 @@ public class Repository implements Repo{
     public void createFlowerShop(String name) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees));
-            writer.write("FLORISTERIA: " + name + " / ARBOLES");
+            writer.write("FLORISTERIA: " + name + " / ARBOLES"+System.lineSeparator());
             writer.close();
             BufferedWriter writer2 = new BufferedWriter(new FileWriter(flowershopFlowers));
-            writer2.write("FLORISTERIA: " + name + " / FLORES");
+            writer2.write("FLORISTERIA: " + name + " / FLORES"+System.lineSeparator());
             writer2.close();
             BufferedWriter writer3 = new BufferedWriter(new FileWriter(flowershopDecorations));
-            writer3.write("FLORISTERIA: " + name + " / DECORACION");
+            writer3.write("FLORISTERIA: " + name + " / DECORACION"+System.lineSeparator());
             writer3.close();
             BufferedWriter writer4 = new BufferedWriter(new FileWriter(flowershopTickets));
-            writer4.write("FLORISTERIA: " + name + " / TICKETS");
+            writer4.write("FLORISTERIA: " + name + " / TICKETS"+System.lineSeparator());
             writer4.close();
             BufferedWriter writer5 = new BufferedWriter(new FileWriter(flowershopSells));
-            writer5.write("FLORISTERIA: " + name + " / VENTAS");
+            writer5.write("FLORISTERIA: " + name + " / VENTAS"+System.lineSeparator());
             writer5.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -128,6 +128,7 @@ public class Repository implements Repo{
                 Tree tree = new Tree(Integer.parseInt(parts[0]), parts[1], Double.parseDouble(parts[2]),
                         Integer.parseInt(parts[3]), Double.parseDouble(parts[4]));
                 products.add(tree);
+
         }
         reader = new BufferedReader(new FileReader(flowershopFlowers));
         reader.readLine();
@@ -220,8 +221,7 @@ public class Repository implements Repo{
         newflower.append(flower.getPrice()  + ";");
         newflower.append(flower.getQuantity()  + ";");
         newflower.append(flower.getColor());
-        writer.newLine();
-        writer.write(newflower.toString());
+        writer.write(newflower.toString() +System.lineSeparator());
         writer.close();
 
     }
@@ -235,8 +235,7 @@ public class Repository implements Repo{
         newtree.append(tree.getPrice() + ";");
         newtree.append(tree.getQuantity() + ";");
         newtree.append(tree.getHigh());
-        writer.newLine();
-        writer.write(newtree.toString());
+        writer.write(newtree.toString()+System.lineSeparator());
         writer.close();
 
     }
@@ -250,8 +249,7 @@ public class Repository implements Repo{
         newdeco.append(decoration.getPrice() + ";");
         newdeco.append(decoration.getQuantity() + ";");
         newdeco.append(decoration.getMaterial());
-        writer.newLine();
-        writer.write(newdeco.toString());
+        writer.write(newdeco.toString()+System.lineSeparator());
         writer.close();
 
     }
@@ -265,8 +263,7 @@ public class Repository implements Repo{
            newticket.append(pfs.getProduct().getId() + ";");
            newticket.append(pfs.getQuantity());
        }
-        writer.newLine();
-        writer.write(newticket.toString());
+        writer.write(newticket.toString()+System.lineSeparator());
         writer.close();
         createSell(ticket);
     }
@@ -277,8 +274,7 @@ public class Repository implements Repo{
         StringBuilder newsell = new StringBuilder();
         newsell.append(assignId(flowershopSells) + ";");
         newsell.append(sell.getTotalPrice());
-        writer.newLine();
-        writer.write(newsell.toString());
+        writer.write(newsell.toString() + System.lineSeparator());
         writer.close();
     }
     //endregion CREATE
@@ -297,13 +293,14 @@ public class Repository implements Repo{
         StringBuilder originalFileContent = new StringBuilder();
         String line = null;
         while ((line = reader.readLine())  != null){
-            originalFileContent.append(line + System.lineSeparator());
+            if(!line.isBlank()) {
+                originalFileContent.append(line + System.lineSeparator());
+            }
         }
         String oldline = getTreeString(tree);
         String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newtree.toString());
-        String modifiedFileContent2 = modifiedFileContent.replaceAll("", null);
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees));
-        writer.write(modifiedFileContent2);
+        writer.write(modifiedFileContent);
         writer.close();
 
     }
@@ -321,13 +318,14 @@ public class Repository implements Repo{
         StringBuilder originalFileContent = new StringBuilder();
         String line = null;
         while ((line = reader.readLine())  != null){
-            originalFileContent.append(line + System.lineSeparator());;
+            if(!line.isEmpty()) {
+                originalFileContent.append(line + System.lineSeparator());
+            }
         }
         String oldline = getFlowerString(flower);
         String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newflower.toString());
-        String modifiedFileContent2 = modifiedFileContent.replaceAll("", null);
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopFlowers));
-        writer.write(modifiedFileContent2);
+        writer.write(modifiedFileContent);
         writer.close();
 
     }
@@ -345,13 +343,14 @@ public class Repository implements Repo{
         StringBuilder originalFileContent = new StringBuilder();
         String line = null;
         while ((line = reader.readLine())  != null){
-            originalFileContent.append(line + System.lineSeparator());;
+            if(!line.isEmpty()) {
+                originalFileContent.append(line + System.lineSeparator());
+            }
         }
         String oldline = getDecoString(decoration);
         String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newdeco.toString());
-        String modifiedFileContent2 = modifiedFileContent.replaceAll("", null);
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopDecorations));
-        writer.write(modifiedFileContent2);
+        writer.write(modifiedFileContent);
         writer.close();
     }
     //endregion UPDATE
