@@ -19,10 +19,12 @@ import org.example.service.Service;
 
 public class Main {
 
+	// region variables
 	private static Serv service;
 	private static Scanner inputKey;
 	private static String shopName;
 	private static List<Product> products = new ArrayList<>();
+
 
 	public static void main(String[] args) {
 
@@ -63,8 +65,7 @@ public class Main {
 		}
 
 		/*
-		 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Stock menues
-		 * <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Stock menues  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		 */
 
 	}
@@ -189,6 +190,7 @@ public class Main {
 			System.out.println("\n" + "The product already exists" + "\n");
 		} else {
 			System.out.println("\n" + "Hubo un problema al crear el producto. Por favor verifique el stock." + "\n");
+
 		}
 		mainMenu();
 
@@ -211,6 +213,7 @@ public class Main {
 			System.out.println("\n" + "The product already exists" + "\n");
 		} else {
 			System.out.println("\n" + "Hubo un problema al crear el producto. Por favor verifique el stock." + "\n");
+
 		}
 		mainMenu();
 
@@ -253,6 +256,7 @@ public class Main {
 		} catch (GetMethodException e) {
 			System.err.println("\n" + "Unable to show product list" + "\n");
 		} 
+
 		Map<Integer, Product> productsToShow = new HashMap<>();
 		List<ProductforSale> ticketDetail = new ArrayList<>();
 		System.out.println("\n" + "** Create ticket **" + "\n");
@@ -269,11 +273,11 @@ public class Main {
 
 		do {
 			selection = captureNumber("\n" + "Select product from list or 0 to finish: " + "\n");
+
 			if (selection <= products.size() && selection > 0) {
 				int productQuantity = captureNumber("Quantity: " + "\n");
 				Product productSelected = productsToShow.get(selection);
 				ProductforSale productForSale = new ProductforSale(productSelected, productQuantity);
-
 				boolean enoughStock = service.checkStock(productForSale);
 				if(selection <= products.size() && selection > 0){
 					if(enoughStock == false){
@@ -300,6 +304,7 @@ public class Main {
 				
 				//
 			} else if (selection > 0){
+
 				System.out.println("Product not included in the list, try again");
 			}
 		} while (selection != 0);
@@ -331,6 +336,7 @@ public class Main {
 		try {
 		System.out.println("\n" + "** Total sales amount:  **" + "\n");
 		System.out.println(service.sumAllTickets());
+
 		System.out.println("\n");
 
 		} catch (SumMethodException e) {
