@@ -23,11 +23,15 @@ public class Repository implements Repo{
     //Metodes d'inici per esbrinar si ja existeix una base de dades i en cas negatiu imprimir el nom de la floristeria com a titol
     @Override
     public String init() {
-        Path path = Path.of("\\DataBase");
+        Path path = Path.of("DataBase");
         String filename = null;
         if (Files.isDirectory(path)) {
             try (Stream<Path> entries = Files.list(path)) {
-                filename = entries.toString();
+                BufferedReader reader = new BufferedReader(new FileReader(flowershopTrees));
+                String line =  reader.readLine();
+                String[] parts = line.split(":");
+                String[] parts2 = parts[1].split("/");
+                filename = parts2[0];
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -39,19 +43,19 @@ public class Repository implements Repo{
     public void createFlowerShop(String name) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees));
-            writer.write("FLORISTERIA: " + name + " / ARBOLES");
+            writer.write("FLORISTERIA: " + name + " / ARBOLES"+System.lineSeparator());
             writer.close();
             BufferedWriter writer2 = new BufferedWriter(new FileWriter(flowershopFlowers));
-            writer2.write("FLORISTERIA: " + name + " / FLORES");
+            writer2.write("FLORISTERIA: " + name + " / FLORES"+System.lineSeparator());
             writer2.close();
             BufferedWriter writer3 = new BufferedWriter(new FileWriter(flowershopDecorations));
-            writer3.write("FLORISTERIA: " + name + " / DECORACION");
+            writer3.write("FLORISTERIA: " + name + " / DECORACION"+System.lineSeparator());
             writer3.close();
             BufferedWriter writer4 = new BufferedWriter(new FileWriter(flowershopTickets));
-            writer4.write("FLORISTERIA: " + name + " / TICKETS");
+            writer4.write("FLORISTERIA: " + name + " / TICKETS"+System.lineSeparator());
             writer4.close();
             BufferedWriter writer5 = new BufferedWriter(new FileWriter(flowershopSells));
-            writer5.write("FLORISTERIA: " + name + " / VENTAS");
+            writer5.write("FLORISTERIA: " + name + " / VENTAS"+System.lineSeparator());
             writer5.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -78,7 +82,7 @@ public class Repository implements Repo{
         boolean found = false;
 
         while ((line = reader.readLine()) != null) {
-            if (line.contains(Integer.toString(id))) {
+            if (line.startsWith(Integer.toString(id))) {
                 found = true;
             }
         }
@@ -124,6 +128,7 @@ public class Repository implements Repo{
                 Tree tree = new Tree(Integer.parseInt(parts[0]), parts[1], Double.parseDouble(parts[2]),
                         Integer.parseInt(parts[3]), Double.parseDouble(parts[4]));
                 products.add(tree);
+
         }
         reader = new BufferedReader(new FileReader(flowershopFlowers));
         reader.readLine();
@@ -169,7 +174,7 @@ public class Repository implements Repo{
             case "Tree":
                 reader = new BufferedReader(new FileReader(flowershopTrees));
                 while ((line = reader.readLine()) != null) {
-                    if (line.contains(Integer.toString(id))){
+                    if (line.startsWith(Integer.toString(id))){
                         String[] parts = line.split(";");
                         Tree tree = new Tree(Integer.valueOf(parts[1]), parts[2], Double.valueOf(parts[3]),
                                 Integer.valueOf(parts[4]), Double.valueOf(parts[5]));
@@ -180,7 +185,7 @@ public class Repository implements Repo{
             case "Flower":
                 reader = new BufferedReader(new FileReader(flowershopFlowers));
                 while ((line = reader.readLine()) != null) {
-                    if (line.contains(Integer.toString(id))){
+                    if (line.startsWith(Integer.toString(id))){
                         String[] parts = line.split(";");
                         Flower flower = new Flower(Integer.valueOf(parts[1]), parts[2], Double.valueOf(parts[3]),
                                 Integer.valueOf(parts[4]), parts[5]);
@@ -191,7 +196,7 @@ public class Repository implements Repo{
             case "Decoration":
                 reader = new BufferedReader(new FileReader(flowershopDecorations));
                 while ((line = reader.readLine()) != null) {
-                    if (line.contains(Integer.toString(id))){
+                    if (line.startsWith(Integer.toString(id))){
                         String[] parts = line.split(";");
                         Decoration decoration = new Decoration(Integer.valueOf(parts[1]), parts[2], Double.valueOf(parts[3]),
                                 Integer.valueOf(parts[4]), parts[5]);
@@ -211,13 +216,12 @@ public class Repository implements Repo{
     public void createFlower(Flower flower) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopFlowers, true));
         StringBuilder newflower = new StringBuilder();
-        newflower.append(flower.getId() + ";");
+        newflower.append(assignId(flowershopFlowers) + ";");
         newflower.append(flower.getName()  + ";");
         newflower.append(flower.getPrice()  + ";");
         newflower.append(flower.getQuantity()  + ";");
         newflower.append(flower.getColor());
-        writer.newLine();
-        writer.write(newflower.toString());
+        writer.write(newflower.toString() +System.lineSeparator());
         writer.close();
 
     }
@@ -226,13 +230,12 @@ public class Repository implements Repo{
     public void createTree(Tree tree) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees, true));
         StringBuilder newtree = new StringBuilder();
-        newtree.append(tree.getId() + ";");
+        newtree.append(assignId(flowershopTrees) + ";");
         newtree.append(tree.getName() + ";");
         newtree.append(tree.getPrice() + ";");
         newtree.append(tree.getQuantity() + ";");
         newtree.append(tree.getHigh());
-        writer.newLine();
-        writer.write(newtree.toString());
+        writer.write(newtree.toString()+System.lineSeparator());
         writer.close();
 
     }
@@ -241,13 +244,12 @@ public class Repository implements Repo{
     public void createDeco(Decoration decoration) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopDecorations, true));
         StringBuilder newdeco = new StringBuilder();
-        newdeco.append(decoration.getId() + ";");
+        newdeco.append(assignId(flowershopDecorations) + ";");
         newdeco.append(decoration.getName() + ";");
         newdeco.append(decoration.getPrice() + ";");
         newdeco.append(decoration.getQuantity() + ";");
         newdeco.append(decoration.getMaterial());
-        writer.newLine();
-        writer.write(newdeco.toString());
+        writer.write(newdeco.toString()+System.lineSeparator());
         writer.close();
 
     }
@@ -256,24 +258,23 @@ public class Repository implements Repo{
     public void createTicket(Ticket ticket) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTickets, true));
         StringBuilder newticket = new StringBuilder();
-        newticket.append(ticket.getId() + ";");
+        newticket.append(assignId(flowershopTickets) + ";");
        for (ProductforSale pfs : ticket.getProductforSales()){
            newticket.append(pfs.getProduct().getId() + ";");
            newticket.append(pfs.getQuantity());
        }
-        writer.newLine();
-        writer.write(newticket.toString());
+        writer.write(newticket.toString()+System.lineSeparator());
         writer.close();
+        createSell(ticket);
     }
 
     @Override
     public void createSell(Ticket sell) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopSells, true));
         StringBuilder newsell = new StringBuilder();
-        newsell.append(sell.getId() + ";");
+        newsell.append(assignId(flowershopSells) + ";");
         newsell.append(sell.getTotalPrice());
-        writer.newLine();
-        writer.write(newsell.toString());
+        writer.write(newsell.toString() + System.lineSeparator());
         writer.close();
     }
     //endregion CREATE
@@ -289,14 +290,15 @@ public class Repository implements Repo{
         newtree.append(tree.getHigh());
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopTrees));
-        String currentReadingLine = reader.readLine();
-        String originalFileContent = "";
-        while (currentReadingLine != null) {
-            originalFileContent += currentReadingLine + System.lineSeparator();
-            currentReadingLine = reader.readLine();
+        StringBuilder originalFileContent = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine())  != null){
+            if(!line.isBlank()) {
+                originalFileContent.append(line + System.lineSeparator());
+            }
         }
         String oldline = getTreeString(tree);
-        String modifiedFileContent = originalFileContent.replaceAll(oldline, newtree.toString());
+        String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newtree.toString());
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees));
         writer.write(modifiedFileContent);
         writer.close();
@@ -313,14 +315,15 @@ public class Repository implements Repo{
         newflower.append(flower.getColor());
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopFlowers));
-        String currentReadingLine = reader.readLine();
-        String originalFileContent = "";
-        while (currentReadingLine != null) {
-            originalFileContent += currentReadingLine + System.lineSeparator();
-            currentReadingLine = reader.readLine();
+        StringBuilder originalFileContent = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine())  != null){
+            if(!line.isEmpty()) {
+                originalFileContent.append(line + System.lineSeparator());
+            }
         }
         String oldline = getFlowerString(flower);
-        String modifiedFileContent = originalFileContent.replaceAll(oldline, newflower.toString());
+        String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newflower.toString());
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopFlowers));
         writer.write(modifiedFileContent);
         writer.close();
@@ -337,14 +340,15 @@ public class Repository implements Repo{
         newdeco.append(decoration.getMaterial());
 
         BufferedReader reader = new BufferedReader(new FileReader(flowershopDecorations));
-        String currentReadingLine = reader.readLine();
-        String originalFileContent = "";
-        while (currentReadingLine != null) {
-            originalFileContent += currentReadingLine + System.lineSeparator();
-            currentReadingLine = reader.readLine();
+        StringBuilder originalFileContent = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine())  != null){
+            if(!line.isEmpty()) {
+                originalFileContent.append(line + System.lineSeparator());
+            }
         }
         String oldline = getDecoString(decoration);
-        String modifiedFileContent = originalFileContent.replaceAll(oldline, newdeco.toString());
+        String modifiedFileContent = originalFileContent.toString().replaceAll(oldline, newdeco.toString());
         BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopDecorations));
         writer.write(modifiedFileContent);
         writer.close();
@@ -376,7 +380,6 @@ public class Repository implements Repo{
         }
         return productString;
     }
-
     public String getDecoString(Decoration decoration) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(flowershopDecorations));
         String line;
@@ -389,5 +392,18 @@ public class Repository implements Repo{
         }
         return productString;
     }
+    public int assignId(File file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line;
+        int id = 0;
+        reader.readLine();
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(";");
+            id = Integer.valueOf(parts[0]);
+        }
+        id++;
+        return id;
+    }
+
     //endregion METODOS AUXILIARES
 }
