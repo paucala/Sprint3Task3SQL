@@ -103,7 +103,7 @@ public class Main {
 			System.out.println("\n" + "** Stock ammount menu **" + "\n");
 			System.out.println("The stock ammount is: " + totalStock + "\n");
 		} catch (SumMethodException e) {
-			System.err.println("\n" + "There has been an error, please try again" + "\n");
+			System.err.println("\n" + "Error while adding stock" + "\n");
 		}
 
 		mainMenu();
@@ -118,7 +118,7 @@ public class Main {
 		products.forEach(System.out::println);
 		System.out.println("\n");
 		} catch (GetMethodException e) {
-			System.err.println("\n" + "There has been an error, please try again" + "\n");
+			System.err.println("\n" + "Error creating stock list" + "\n");
 		}
 		
 		mainMenu();
@@ -251,7 +251,7 @@ public class Main {
 		try {
 			products = service.getAllProducts();
 		} catch (GetMethodException e) {
-			System.err.println("\n" + "There has been an error, please try again" + "\n");
+			System.err.println("\n" + "Unable to show product list" + "\n");
 		} 
 		Map<Integer, Product> productsToShow = new HashMap<>();
 		List<ProductforSale> ticketDetail = new ArrayList<>();
@@ -314,10 +314,15 @@ public class Main {
 			System.out.println("\n" + "Total amount: " + totalAmount + "\n");
 
 			Ticket ticket = new Ticket(ticketDetail);
-			service.createTicket(ticket);
-			
-			mainMenu();
+			boolean ticketOk = service.createTicket(ticket);
+			if(!ticketOk) {
+				System.err.println("Unable to create ticket");				
+			}else {
+				System.out.println("Ticket generated succefully");
+			}
 		}
+			mainMenu();
+		
 
 	}
 
