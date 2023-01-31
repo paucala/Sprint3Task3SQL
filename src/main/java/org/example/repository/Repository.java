@@ -357,37 +357,43 @@ public class Repository implements Repo{
 
     //region METODOS AUXILIARES
     public String getTreeString(Tree tree) throws IOException {
+        boolean exit = false;
         BufferedReader reader = new BufferedReader(new FileReader(flowershopTrees));
         String line;
         String productString = null;
 
-        while ((line = reader.readLine()) != null) {
-            if (line.contains(Integer.toString(tree.getId()))){
+        while ((line = reader.readLine()) != null && !exit) {
+            if (line.contains(Integer.toString(tree.getId())+";")){
                productString = line;
+               exit = true;
              }
         }
             return productString;
     }
     public String getFlowerString(Flower flower) throws IOException {
+        boolean exit = false;
         BufferedReader reader = new BufferedReader(new FileReader(flowershopFlowers));
         String line;
         String productString = null;
 
-        while ((line = reader.readLine())  != null) {
-            if (line.contains(Integer.toString(flower.getId()))){
+        while ((line = reader.readLine())  != null && !exit) {
+            if (line.contains(Integer.toString(flower.getId())+";")){
                 productString = line;
+                exit = true;
             }
         }
         return productString;
     }
     public String getDecoString(Decoration decoration) throws IOException {
+        boolean exit = false;
         BufferedReader reader = new BufferedReader(new FileReader(flowershopDecorations));
         String line;
         String productString = null;
 
-        while ((line = reader.readLine())  != null) {
-            if (line.contains(Integer.toString(decoration.getId()))){
+        while ((line = reader.readLine())  != null && !exit) {
+            if (line.contains(Integer.toString(decoration.getId())+";")){
                 productString = line;
+                exit = true;
             }
         }
         return productString;
@@ -397,7 +403,7 @@ public class Repository implements Repo{
         String line;
         int id = 0;
         reader.readLine();
-        while ((line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null ) {
             String[] parts = line.split(";");
             id = Integer.valueOf(parts[0]);
         }
