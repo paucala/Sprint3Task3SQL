@@ -315,9 +315,9 @@ public class Main {
 
 			Ticket ticket = new Ticket(ticketDetail);
 			service.createTicket(ticket);
-			
-			mainMenu();
 		}
+			mainMenu();
+		
 
 	}
 
