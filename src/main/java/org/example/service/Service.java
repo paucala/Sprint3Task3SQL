@@ -81,7 +81,7 @@ public class Service implements Serv {
     }
 
 
-    public boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, int idIn){
+    public boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, String nameIn){
         //region DEFINITION VARIABLES
         boolean resul = false, exit = false;
         int index = 0;
@@ -92,7 +92,7 @@ public class Service implements Serv {
         //region ACTIONS
         try{
             do{
-                if(proSafeListIn.get(index).getProduct().getId() == idIn ){
+                if(proSafeListIn.get(index).getProduct().getName().equals(nameIn)){
                     exit =true;
                     resul = true;
                 }
@@ -692,6 +692,7 @@ public class Service implements Serv {
                 }
             }
 
+            result = true;
         } catch (Exception ex) {
             result = false;
         }

@@ -292,7 +292,7 @@ public class Main {
 
 				// controlar si el prod esta repetido
 				
-				boolean noRepeat = service.checkExistOnTicket(ticketDetail, selection);
+				boolean noRepeat = service.checkExistOnTicket(ticketDetail, productForSale.getProduct().getName());
 					if(noRepeat == false) {
 						ticketDetail.add(productForSale);
 						totalAmount = totalAmount + productSelected.getPrice() * productForSale.getQuantity();					

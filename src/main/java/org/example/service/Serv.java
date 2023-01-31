@@ -21,10 +21,10 @@ public interface Serv {
     /**
      * Comprova si en la llsita de ProductfoSafe ja existeixun id
      * @param proSafeListIn La llista de ProductforSafe on cercar el Id.
-     * @param idIn Un int amb el
+     * @param nameIn Un int amb el
      * @return False = No existeix en la llista; True = existeix en la llista.
      */
-    boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, int idIn);
+    boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, String nameIn);
 
     //endregion METHODS: CHECK
 
