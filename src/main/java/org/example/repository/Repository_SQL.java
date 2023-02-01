@@ -3,6 +3,7 @@ package org.example.repository;
 import org.example.domain.Decoration;
 import org.example.domain.Flower;
 import org.example.domain.Product;
+import org.example.domain.Ticket;
 import org.example.domain.Tree;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Repository_SQL {
+public class Repository_SQL implements Repo {
 
     Connect connector;
     PreparedStatement ps;
@@ -20,19 +21,25 @@ public class Repository_SQL {
     static Flower flower; // eliminar
     static Tree tree; // eliminar
     static Decoration decoration; // eliminar
-    public static void main (String [] args) {
+    
+    public static void main (String [] args) { //eliminar
 
         Repository_SQL repository_sql = new Repository_SQL();
 
-        decoration = new Decoration("Mesa", 15, 100,"madera");
-        repository_sql.createDeco(decoration);
-        flower = new Flower("Flor 3", 2.5, 100, "pink"); //
-        repository_sql.createFlower(flower);
-        tree = new Tree("Pino", 8.5, 50, 1.8 );
-        repository_sql.createTree(tree);
-        repository_sql.getAllProducts();
+        //decoration = new Decoration("Mesa", 15, 100,"madera");
+        //repository_sql.createDeco(decoration);
+        //flower = new Flower("Flor 3", 2.5, 100, "pink"); //
+        //repository_sql.createFlower(flower);
+        //tree = new Tree("Pino", 8.5, 50, 1.8 );
+        //repository_sql.createTree(tree);
+        //repository_sql.getAllProducts();
         }
 
+    
+    /*
+     *  >>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+     */
+    
     public void createFlower (Flower flower){ // throws IOException {
 
             try{
@@ -74,8 +81,15 @@ public class Repository_SQL {
             ps.setInt(4, decoration.getQuantity());
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace();}
+        
+        
+/*
+ *  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LIST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<        
+ */
+        
+        
     }
-    public List<Product> getAllProducts() { //throws IOException
+    public List<Product> getAllProducts()  throws IOException {
         List<Product> allProducts = null;
         try {
             allProducts = new ArrayList<>();
@@ -125,6 +139,86 @@ public class Repository_SQL {
         }
         return allProducts;
     }
+
+	@Override
+	public boolean findbyId(int id, String type) throws IOException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean findbyName(String name, String type) throws IOException {
+		
+		connector = new Connect();
+		String sql_decoration = "SELECT name from decoration where decoration_ name = ?";
+		String sql_flower = "SELECT name from flower where flower_ name = ?";
+		String sql_tree = "SELECT name from tree where tree_ name = ?";
+		
+		if(type.equalsIgnoreCase("decoration")) {
+			ps = connector.connect().prepareStatement(sql_decoration);
+		}else if (type.equalsIgnoreCase("flower")) {
+			ps = connector.connect().prepareStatement(sql_flower);
+		}else (type.equalsIgnoreCase("tree")) {
+			ps = connector.connect().prepareStatement(sql_tree);
+		}
+		
+		
+		return false;
+	}
+
+	@Override
+	public List<Ticket> getAllSells() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product getById(int id, String type) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void createTicket(Ticket ticket) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createSell(Ticket sell) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateTree(Tree tree) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateFlower(Flower flower) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateDeco(Decoration decoration) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String init() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void createFlowerShop(String name) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
 
     }
 

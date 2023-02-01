@@ -115,40 +115,7 @@ public class Repository implements Repo{
 
     //region GET
     // metodes per obtindre un o més productes o ventes
-    @Override
-    public List<Product> getAllProducts() throws IOException {
-        BufferedReader reader;
-        String line;
-        ArrayList<Product> products = new ArrayList<>();
 
-        reader = new BufferedReader(new FileReader(flowershopTrees));
-        reader.readLine();
-        while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                Tree tree = new Tree(Integer.parseInt(parts[0]), parts[1], Double.parseDouble(parts[2]),
-                        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]));
-                products.add(tree);
-
-        }
-        reader = new BufferedReader(new FileReader(flowershopFlowers));
-        reader.readLine();
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(";");
-            Flower flower = new Flower(Integer.valueOf(parts[0]), parts[1], Double.valueOf(parts[2]),
-                    Integer.valueOf(parts[3]), parts[4]);
-            products.add(flower);
-        }
-        reader = new BufferedReader(new FileReader(flowershopDecorations));
-        reader.readLine();
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(";");
-            Decoration decoration = new Decoration(Integer.valueOf(parts[0]), parts[1], Double.valueOf(parts[2]),
-                    Integer.valueOf(parts[3]), parts[4]);
-            products.add(decoration);
-        }
-        reader.close();
-        return products;
-    }
 
     @Override
     public List<Ticket> getAllSells() throws IOException {
@@ -212,47 +179,7 @@ public class Repository implements Repo{
 
     //region CREATE
     //aqueste metodes creen noves entrades en el txt pertinent
-    @Override
-    public void createFlower(Flower flower) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopFlowers, true));
-        StringBuilder newflower = new StringBuilder();
-        newflower.append(assignId(flowershopFlowers) + ";");
-        newflower.append(flower.getName()  + ";");
-        newflower.append(flower.getPrice()  + ";");
-        newflower.append(flower.getQuantity()  + ";");
-        newflower.append(flower.getColor());
-        writer.write(newflower.toString() +System.lineSeparator());
-        writer.close();
 
-    }
-
-    @Override
-    public void createTree(Tree tree) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopTrees, true));
-        StringBuilder newtree = new StringBuilder();
-        newtree.append(assignId(flowershopTrees) + ";");
-        newtree.append(tree.getName() + ";");
-        newtree.append(tree.getPrice() + ";");
-        newtree.append(tree.getQuantity() + ";");
-        newtree.append(tree.getHigh());
-        writer.write(newtree.toString()+System.lineSeparator());
-        writer.close();
-
-    }
-
-    @Override
-    public void createDeco(Decoration decoration) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(flowershopDecorations, true));
-        StringBuilder newdeco = new StringBuilder();
-        newdeco.append(assignId(flowershopDecorations) + ";");
-        newdeco.append(decoration.getName() + ";");
-        newdeco.append(decoration.getPrice() + ";");
-        newdeco.append(decoration.getQuantity() + ";");
-        newdeco.append(decoration.getMaterial());
-        writer.write(newdeco.toString()+System.lineSeparator());
-        writer.close();
-
-    }
 
     @Override
     public void createTicket(Ticket ticket) throws IOException {

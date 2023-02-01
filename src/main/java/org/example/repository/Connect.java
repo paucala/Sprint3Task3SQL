@@ -7,7 +7,7 @@ public class Connect {
 
     private static String url = "jdbc:mysql://localhost:3306/floristeria";
     private static String user = "root";
-    private static String pass = "administrador";
+    private static String pass = "1234"; // "administrador";
 
     public Connection connect(){
 

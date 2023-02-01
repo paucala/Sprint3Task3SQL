@@ -4,6 +4,7 @@ import org.example.domain.*;
 import org.example.exception.GetMethodException;
 import org.example.exception.SumMethodException;
 import org.example.repository.Repository;
+import org.example.repository.Repository_SQL;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,14 +14,15 @@ public class Service implements Serv {
 
     //region ATTRIBUTES
     private static Repository repoCls;
-
+    private static Repository_SQL repoCls_SQL;
+    
     //endregion ATTRIBUTES
 
 
     //region METHODS: CHECK
 
     @Override
-    public boolean checkStock(ProductforSale proSale) {
+    public boolean checkStock(ProductforSale proSale) { // No conecta con Respository
         //region DEFINITION VARIABLES
         boolean resul = false, contin = false;
         int i = 0;
@@ -145,7 +147,7 @@ public class Service implements Serv {
 
 
     @Override
-    public boolean createProduct(Product product) {
+    public boolean createProduct(Product product) { // Changed to SQL
         //region DEFINITION VARIABLES
         boolean resul = false;
 
@@ -155,22 +157,22 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // CALL REPOSITORY METHODS
             if (product.getClass() == Decoration.class) {
-                if (!repoCls.findbyName(product.getName(), "Decoration")) {
-                    repoCls.createDeco((Decoration) product);
+                if (!repoCls_SQL.findbyName(product.getName(), "Decoration")) {
+                	repoCls_SQL.createDeco((Decoration) product);
                     resul = true;
                 }
             } else if (product.getClass() == Flower.class) {
-                if (!repoCls.findbyName(product.getName(), "Flower")) {
-                    repoCls.createFlower((Flower) product);
+                if (!repoCls_SQL.findbyName(product.getName(), "Flower")) {
+                	repoCls_SQL.createFlower((Flower) product);
                     resul = true;
                 }
             } else if (product.getClass() == Tree.class) {
-                if (!repoCls.findbyName(product.getName(), "Tree")) {
-                    repoCls.createTree((Tree) product);
+                if (!repoCls_SQL.findbyName(product.getName(), "Tree")) {
+                	repoCls_SQL.createTree((Tree) product);
                     resul = true;
                 }
             }
@@ -226,7 +228,7 @@ public class Service implements Serv {
 
     //region METHODS: GET
     @Override
-    public List<Product> getAllProducts() throws GetMethodException {
+    public List<Product> getAllProducts() throws GetMethodException { // DONE
         //region DEFINITION VARIABLES
         List<Product> productList;
 
@@ -236,10 +238,10 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // CALL REPOSITORY METHOD
-            productList = new ArrayList<>(repoCls.getAllProducts());
+            productList = new ArrayList<>(repoCls_SQL.getAllProducts());
 
         } catch (Exception ex) {
             throw new GetMethodException(1);
@@ -255,7 +257,8 @@ public class Service implements Serv {
 
 
     @Override
-    public List<Decoration> getDecorationList() throws GetMethodException {
+    public List<Decoration> getDecorationList() throws GetMethodException { // Ver si es necesario
+    	
         //region DEFINITION VARIABLES
         List<Decoration> decoList;
 
@@ -279,7 +282,7 @@ public class Service implements Serv {
 
 
     @Override
-    public List<Flower> getFlowerList() throws GetMethodException {
+    public List<Flower> getFlowerList() throws GetMethodException { // Ver si es necesario
         //region DEFINITION VARIABLES
         List<Flower> flowerList;
 
@@ -304,7 +307,7 @@ public class Service implements Serv {
     }
 
     @Override
-    public int[] getStock() throws GetMethodException {
+    public int[] getStock() throws GetMethodException { // Ver donde la llaman y que devuelve
         //region DEFINITION VARIABLES
         int[] results = new int[3];
         List<Product> productList;
@@ -315,22 +318,15 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // 1) GET STOCK
-            productList = new ArrayList<>(repoCls.getAllProducts());
+            productList = new ArrayList<>(repoCls_SQL.getAllProducts());
 
             // 3) SUM ALL STOCK
-            for (Product p : productList) {
-                if (p.getClass() == Decoration.class) {
-                    results[0] += p.getQuantity();
-                } else if (p.getClass() == Flower.class) {
-                    results[1] += p.getQuantity();
-                } else if (p.getClass() == Tree.class) {
-                    results[2] += p.getQuantity();
-                }
-            }
 
+            productList.stream().mapToInt(x -> x.getQuantity()).sum();
+            
         } catch (Exception ex) {
             throw new GetMethodException(5);
         }
@@ -339,11 +335,11 @@ public class Service implements Serv {
 
 
         // OUT
-        return results;
+        return results; // Ver adonde lo llaman y que devuelve
     }
 
     @Override
-    public List<Tree> getTreeList() throws GetMethodException {
+    public List<Tree> getTreeList() throws GetMethodException {// Ver si es necesario
         //region DEFINITION VARIABLES
         List<Tree> treeList;
 
@@ -444,7 +440,7 @@ public class Service implements Serv {
     }
 
     @Override
-    public double sumStock() throws SumMethodException {
+    public double sumStock() throws SumMethodException { // DONE
         //region DEFINITION VARIABLES
         double result = 0;
         List<Product> productList;
@@ -455,15 +451,14 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VALUES
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             /// 1) GET PRODCUTS
-            productList = new ArrayList<>(repoCls.getAllProducts());
+            productList = new ArrayList<>(repoCls_SQL.getAllProducts());
 
             // 2) SUM SCTOCK VALUE
-            for (Product p : productList) {
-                result += p.getQuantity() * p.getPrice();
-            }
+             
+            result = productList.stream().mapToDouble(x -> x.getPrice()).sum();
 
         } catch (Exception ex) {
             throw new SumMethodException(3);

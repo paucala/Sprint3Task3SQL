@@ -43,7 +43,7 @@ public interface Serv {
      * @param product Necessita una classe del tipus de producte que s'ha de crear.
      * @return Tipus boolean. false=> No s'ha pogut crear el producte; true => s'ha creat el producte correctament
      */
-    boolean createProduct(Product product);
+    boolean createProduct(Product product); // DONE 
 
     /**
      * Mètode per crear un nou tiket.
