@@ -18,13 +18,13 @@ public interface Repo {
     void createFlower(Flower flower) throws SQLException;
     void createTree(Tree tree) throws SQLException;
     void createDeco(Decoration decoration) throws SQLException;
-    void createTicket(Ticket ticket) throws IOException;
+    void createTicket(Ticket ticket) throws IOException, SQLException;
     void createSell(Ticket sell) throws IOException;
     void updateTree(Tree tree) throws IOException;
     void updateFlower(Flower flower) throws IOException;
     void updateDeco(Decoration decoration) throws IOException;
     //Devuelve un String con el nombre del archivo o un empty si no existe
-    String init();
-    void createFlowerShop(String name) throws IOException;
+    String init() throws SQLException;
+    void createFlowerShop(String name) throws IOException, SQLException;
 
 }

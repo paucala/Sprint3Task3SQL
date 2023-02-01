@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2023-01-31 14:46
+-- Generated: 2023-02-01 17:39
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -38,6 +38,36 @@ CREATE TABLE IF NOT EXISTS `floristeria`.`tree` (
   `tree_price` DOUBLE NOT NULL,
   `tree_quantity` INT(11) NOT NULL,
   PRIMARY KEY (`tree_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `floristeria`.`ticket` (
+  `ticket_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `ticket_prod_id` INT(11) NOT NULL,
+  `ticket_prod_name` INT(11) NOT NULL,
+  `ticket_prod_quantity` INT(11) NOT NULL,
+  `sell_sell_id` INT(11) NOT NULL,
+  PRIMARY KEY (`ticket_id`, `sell_sell_id`),
+  INDEX `fk_ticket_sell_idx` (`sell_sell_id` ASC) VISIBLE,
+  CONSTRAINT `fk_ticket_sell`
+    FOREIGN KEY (`sell_sell_id`)
+    REFERENCES `floristeria`.`sell` (`sell_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `floristeria`.`sell` (
+  `sell_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `sell_amount` DOUBLE NOT NULL,
+  PRIMARY KEY (`sell_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `floristeria`.`flower_shop` (
+  `flower_shop_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `flower_shop_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`flower_shop_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

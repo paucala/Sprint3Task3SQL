@@ -3,7 +3,6 @@ package org.example.service;
 import org.example.domain.*;
 import org.example.exception.GetMethodException;
 import org.example.exception.SumMethodException;
-import org.example.repository.Repository;
 import org.example.repository.Repository_SQL;
 
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.List;
 public class Service implements Serv {
 
     //region ATTRIBUTES
-    private static Repository repoCls;
+
     private static Repository_SQL repoCls_SQL;
     
     //endregion ATTRIBUTES
@@ -130,12 +129,12 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            if(repoCls == null) {
-                repoCls = new Repository();
+            if(repoCls_SQL == null) {
+                repoCls_SQL = new Repository_SQL();
             }
 
             // CALL REPOSITORY METHOD
-            repoCls.createFlowerShop(name);
+            repoCls_SQL.createFlowerShop(name);
 
         } catch (Exception ex) {
             //TODO control errors
@@ -200,16 +199,16 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // 1) CALCULATE TOTAL PRICE
             ticket.setTotalPrice(sumTicket(ticket));
 
             // 2) SAVE TICKET
-            repoCls.createTicket(ticket);
+            repoCls_SQL.createTicket(ticket);
 
             // 3) UPDATE STOCKS
-            result = updateStock(ticket);
+            result = updateStock(ticket); // adónde apunta
 
         } catch (Exception ex) {
             result = false;
@@ -272,17 +271,17 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // CALL REPOSITORY METHOD
             if (product.getClass() == Decoration.class) {
-                repoCls.updateDeco((Decoration) product);
+                repoCls_SQL.updateDeco((Decoration) product);
                 result = true;
             } else if (product.getClass() == Flower.class) {
-                repoCls.updateFlower((Flower) product);
+                repoCls_SQL.updateFlower((Flower) product);
                 result = true;
             } else if (product.getClass() == Tree.class) {
-                repoCls.updateTree((Tree) product);
+                repoCls_SQL.updateTree((Tree) product);
                 result = true;
             } else {
                 result = false;
@@ -315,10 +314,10 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // CALL REPOSITORY METHOD
-            name = repoCls.init();
+            name = repoCls_SQL.init();
 
         } catch (Exception ex) {
             //TODO control errors
@@ -399,7 +398,7 @@ public class Service implements Serv {
      * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
      */
     @Override
-    public double sumAllTickets() throws SumMethodException {
+    public double sumAllTickets() throws SumMethodException { // TODO
         //region DEFINITION VARIABLES
         double result = 0;
         List<Ticket> ticketList;
@@ -410,15 +409,13 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // 1) GET ALL TICKETS ON DDBB
-            ticketList = new ArrayList<>(repoCls.getAllSells());
+            ticketList = new ArrayList<>(repoCls_SQL.getAllSells());
 
             // 2) SUM TICKETS VALUES
-            for (Ticket t : ticketList) {
-                result += t.getTotalPrice();
-            }
+            result = ticketList.stream().mapToDouble(x -> x.getTotalPrice()).sum();
 
         } catch (Exception ex) {
             throw new SumMethodException(1);
@@ -454,10 +451,10 @@ public class Service implements Serv {
         //region ACTIONS
         // INIT VARIABLES
         decoList = new ArrayList<>();
-        repoCls = new Repository();
+        repoCls_SQL = new Repository_SQL();
 
         // 1) GET ALL PRODUCTS
-        productList = new ArrayList<>(repoCls.getAllProducts());
+        productList = new ArrayList<>(repoCls_SQL.getAllProducts());
 
         // 2) FIND DECORATION PRODUCTS
         for (Product p : productList) {
@@ -491,10 +488,10 @@ public class Service implements Serv {
         //region ACTIONS
         // INIT VARIABLES
         flowerList = new ArrayList<>();
-        repoCls = new Repository();
+        repoCls_SQL = new Repository_SQL();
 
         // 1) GET ALL PRODUCTS
-        productList = new ArrayList<>(repoCls.getAllProducts());
+        productList = new ArrayList<>(repoCls_SQL.getAllProducts());
 
         // 2) FIND DECORATION PRODUCTS
         for (Product p : productList) {
@@ -529,10 +526,10 @@ public class Service implements Serv {
         // INIT VARIABLES
         treeList = new ArrayList<>();
 
-        repoCls = new Repository();
+        repoCls_SQL = new Repository_SQL();
 
         // 1) GET ALL PRODUCTS
-        productList = new ArrayList<>(repoCls.getAllProducts());
+        productList = new ArrayList<>(repoCls_SQL.getAllProducts());
 
         // 2) FIND DECORATION PRODUCTS
         for (Product p : productList) {
@@ -555,7 +552,7 @@ public class Service implements Serv {
      * @param ticket Classe del tipus Ticket amb la llista de tots els productes que s'han comprat.
      * @return Tipus boolean. False = hi ha hagut algun problema; True = No hi hagut cap problema.
      */
-    private boolean updateStock(Ticket ticket) {
+    private boolean updateStock(Ticket ticket) { // TODO
         //region DEFINITION VARIABLES
         boolean result = false;
 
@@ -565,18 +562,18 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT
-            repoCls = new Repository();
+            repoCls_SQL = new Repository_SQL();
 
             // ITERATE FOR ALL PRODUCTS
             for (ProductforSale p : ticket.getProductforSales()) {
                 p.getProduct().setQuantity(p.getProduct().getQuantity() - p.getQuantity());
 
                 if (p.getProduct().getClass() == Decoration.class) {
-                    repoCls.updateDeco((Decoration) p.getProduct());
+                    repoCls_SQL.updateDeco((Decoration) p.getProduct());
                 } else if (p.getProduct().getClass() == Flower.class) {
-                    repoCls.updateFlower((Flower) p.getProduct());
+                    repoCls_SQL.updateFlower((Flower) p.getProduct());
                 } else if (p.getProduct().getClass() == Tree.class) {
-                    repoCls.updateTree((Tree) p.getProduct());
+                    repoCls_SQL.updateTree((Tree) p.getProduct());
                 }
             }
 

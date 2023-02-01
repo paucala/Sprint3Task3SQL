@@ -1,10 +1,6 @@
 package org.example.repository;
 
-import org.example.domain.Decoration;
-import org.example.domain.Flower;
-import org.example.domain.Product;
-import org.example.domain.Ticket;
-import org.example.domain.Tree;
+import org.example.domain.*;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -22,19 +18,6 @@ public class Repository_SQL implements Repo {
     static Flower flower; // eliminar
     static Tree tree; // eliminar
     static Decoration decoration; // eliminar
-    
-    public static void main (String [] args) { //eliminar
-
-        Repository_SQL repository_sql = new Repository_SQL();
-
-        //decoration = new Decoration("Mesa", 15, 100,"madera");
-        //repository_sql.createDeco(decoration);
-        //flower = new Flower("Flor 3", 2.5, 100, "pink"); //
-        //repository_sql.createFlower(flower);
-        //tree = new Tree("Pino", 8.5, 50, 1.8 );
-        //repository_sql.createTree(tree);
-        //repository_sql.getAllProducts();
-        }
 
     
     /*
@@ -88,11 +71,6 @@ public class Repository_SQL implements Repo {
 /*
  *  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LIST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<        
  */
-        
-        
-    
-    
-    
     
     public List<Product> getAllProducts()  throws IOException {
         List<Product> allProducts = null;
@@ -167,7 +145,7 @@ public class Repository_SQL implements Repo {
 		}else if (type.equalsIgnoreCase("tree")) {
 			ps = connector.connect().prepareStatement(sql_tree);
 		}
-		
+		ps.setString(1, name);
 		rs = ps.executeQuery();
 		if(rs.next()){
 			resp =  true;
@@ -177,7 +155,7 @@ public class Repository_SQL implements Repo {
 	}
 
 	@Override
-	public List<Ticket> getAllSells() throws IOException {
+	public List<Ticket> getAllSells() throws IOException { // TODO
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -189,45 +167,81 @@ public class Repository_SQL implements Repo {
 	}
 
 	@Override
-	public void createTicket(Ticket ticket) throws IOException {
+	public void createTicket(Ticket ticket) throws SQLException {
+
+        List <ProductforSale> ticketDetail = ticket.getProductforSales();
+        int ticketNumber = 0;
+        connector = new Connect();
+        String sqlAmount = "INSERT INTO sell (sell_amount) values (?)";
+        ps = connector.connect().prepareStatement(sqlAmount);
+        ps.setDouble(1, ticket.getTotalPrice());
+        ps.executeUpdate();
+
+        Statement statement = connector.connect().createStatement();
+        rs = statement.executeQuery("SELECT sell_id FROM sell ORDER BY sell_id DESC");
+        if (rs.next()){
+            ticketNumber = rs.getInt("sell_id");
+        }
+
+        String sql = "INSERT INTO ticket (ticket_prod_id, ticket_prod_name, ticket_prod_quantity, sell_sell_id)" +
+                " values (?, ?, ?, ?)";
+
+        ps = connector.connect().prepareStatement(sql);
+
+        for(ProductforSale productforSale : ticketDetail){
+
+           ps.setInt(1, productforSale.getProduct().getId());
+           ps.setString(2, productforSale.getProduct().getName());
+           ps.setInt (3, productforSale.getQuantity()); // ojo, ver si es la cantidad vendida o el stock del producto.
+           ps.setInt(4, ticketNumber); // OJO esto lo harcodeo ahora pero debo arreglarlo
+           ps.executeUpdate();
+        }
+	}
+
+	@Override
+	public void createSell(Ticket sell) throws IOException { // TODO
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void createSell(Ticket sell) throws IOException {
+	public void updateTree(Tree tree) throws IOException { // TODO
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateTree(Tree tree) throws IOException {
+	public void updateFlower(Flower flower) throws IOException { // TODO
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateFlower(Flower flower) throws IOException {
+	public void updateDeco(Decoration decoration) throws IOException { // TODO
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateDeco(Decoration decoration) throws IOException {
-		// TODO Auto-generated method stub
-		
+	public String init() throws SQLException {
+        String name = null;
+        connector = new Connect();
+        Statement statement = connector.connect().createStatement();
+        rs = statement.executeQuery("SELECT name FROM flower_shop");
+            if(rs.next()){
+                name = rs.getString("flower_shop_name");
+            }
+        return name;
 	}
 
 	@Override
-	public String init() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public void createFlowerShop(String name) throws SQLException {
 
-	@Override
-	public void createFlowerShop(String name) throws IOException {
-		// TODO Auto-generated method stub
-		
+        connector = new Connect();
+        String sql = "INSERT INTO flower shop (flower_shop_name) values (?)";
+        ps = connector.connect().prepareStatement(sql);
+        ps.setString(1, name);
+        ps.executeUpdate();
 	}
 
     }
