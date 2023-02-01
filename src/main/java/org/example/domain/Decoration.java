@@ -13,6 +13,10 @@ public class Decoration extends Product{
         this.material = material;
     }
 
+    public Decoration() {
+
+    }
+
     public String getMaterial() {
         return material;
     }

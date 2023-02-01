@@ -12,6 +12,7 @@ public abstract class Product {
         this.name = name;
         this.quantity = quantity;
     }
+    public Product(){}
 
     public Product(int id, String name, double price, int quantity) {
         this.id = id;
