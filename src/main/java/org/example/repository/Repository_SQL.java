@@ -9,6 +9,7 @@ import org.example.domain.Tree;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,10 @@ public class Repository_SQL implements Repo {
      *  >>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      */
     
-    public void createFlower (Flower flower){ // throws IOException {
 
-            try{
+    public void createFlower (Flower flower) throws SQLException {
+
+            
             String sql = "INSERT INTO flower (flower_name, flower_color, flower_price, flower_quantity)" +
                     " values (?, ?, ?, ?)";
             connector = new Connect();
@@ -52,11 +54,11 @@ public class Repository_SQL implements Repo {
             ps.setDouble(3, flower.getPrice());
             ps.setInt(4, flower.getQuantity());
             ps.executeUpdate();
-            } catch (Exception e) { e.printStackTrace();}
+          
     }
-    public void createTree (Tree tree){ // throws IOException {
+    public void createTree (Tree tree)throws SQLException {
 
-        try{
+       
             String sql = "INSERT INTO tree (tree_name, tree_price, tree_quantity, tree_height)" +
                     " values (?, ?, ?, ?)";
             connector = new Connect();
@@ -66,11 +68,12 @@ public class Repository_SQL implements Repo {
             ps.setInt(3, tree.getQuantity());
             ps.setDouble(4, tree.getQuantity());
             ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace();}
-    }
-    public void createDeco (Decoration decoration){ // throws IOException {
 
-        try{
+    }
+    
+    public void createDeco (Decoration decoration)throws SQLException {
+
+        
             String sql = "INSERT INTO decoration (decoration_name, decoration_material, decoration_price, decoration_quantity)" +
                     " values (?, ?, ?, ?)";
             connector = new Connect();
@@ -80,15 +83,17 @@ public class Repository_SQL implements Repo {
             ps.setDouble(3, decoration.getPrice());
             ps.setInt(4, decoration.getQuantity());
             ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace();}
         
-        
+    }
 /*
  *  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LIST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<        
  */
         
         
-    }
+    
+    
+    
+    
     public List<Product> getAllProducts()  throws IOException {
         List<Product> allProducts = null;
         try {
@@ -141,14 +146,15 @@ public class Repository_SQL implements Repo {
     }
 
 	@Override
-	public boolean findbyId(int id, String type) throws IOException {
+	public boolean findbyId(int id, String type) throws IOException { //
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean findbyName(String name, String type) throws IOException {
+	public boolean findbyName(String name, String type) throws Exception {
 		
+		boolean resp = false;
 		connector = new Connect();
 		String sql_decoration = "SELECT name from decoration where decoration_ name = ?";
 		String sql_flower = "SELECT name from flower where flower_ name = ?";
@@ -158,12 +164,16 @@ public class Repository_SQL implements Repo {
 			ps = connector.connect().prepareStatement(sql_decoration);
 		}else if (type.equalsIgnoreCase("flower")) {
 			ps = connector.connect().prepareStatement(sql_flower);
-		}else (type.equalsIgnoreCase("tree")) {
+		}else if (type.equalsIgnoreCase("tree")) {
 			ps = connector.connect().prepareStatement(sql_tree);
 		}
 		
+		rs = ps.executeQuery();
+		if(rs.next()){
+			resp =  true;
+		} 
 		
-		return false;
+		return resp;
 	}
 
 	@Override
@@ -173,7 +183,7 @@ public class Repository_SQL implements Repo {
 	}
 
 	@Override
-	public Product getById(int id, String type) throws IOException {
+	public Product getById(int id, String type) throws IOException { //
 		// TODO Auto-generated method stub
 		return null;
 	}
