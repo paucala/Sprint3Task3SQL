@@ -115,7 +115,6 @@ public class Repository_SQL implements Repo {
             }
             ps.close();
             rs.close();
-            allProducts.forEach(x -> System.out.println(x));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,26 +129,61 @@ public class Repository_SQL implements Repo {
 	}
 
 	@Override
-	public boolean findbyName(String name, String type) throws Exception {
+	public boolean findbyName(String name, String type) { //throws Exception {
 		
+		String nombre = name;
 		boolean resp = false;
 		connector = new Connect();
-		String sql_decoration = "SELECT name from decoration where decoration_ name = ?";
-		String sql_flower = "SELECT name from flower where flower_ name = ?";
-		String sql_tree = "SELECT name from tree where tree_ name = ?";
+		String sql_decoration = "SELECT * from decoration where decoration_name = ?";
+		String sql_flower = "SELECT * from flower where flower_name = ?";
+		String sql_tree = "SELECT * from tree where tree_name = ?";
 		
 		if(type.equalsIgnoreCase("decoration")) {
-			ps = connector.connect().prepareStatement(sql_decoration);
+			try {
+				ps = connector.connect().prepareStatement(sql_decoration);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}else if (type.equalsIgnoreCase("flower")) {
-			ps = connector.connect().prepareStatement(sql_flower);
+			try {
+				ps = connector.connect().prepareStatement(sql_flower);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}else if (type.equalsIgnoreCase("tree")) {
-			ps = connector.connect().prepareStatement(sql_tree);
+			try {
+				ps = connector.connect().prepareStatement(sql_tree);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		ps.setString(1, name);
-		rs = ps.executeQuery();
-		if(rs.next()){
-			resp =  true;
+		try {
+			ps.setString(1, nombre);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			while (rs.next()){
+				resp =  true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
+		
+		
+		
+		
 		
 		return resp;
 	}
@@ -190,7 +224,7 @@ public class Repository_SQL implements Repo {
 
         for(ProductforSale productforSale : ticketDetail){
 
-           ps.setInt(1, productforSale.getProduct().getId());
+           ps.setInt(1, 1); // productforSale.getProduct().getId()); // Si necesito el dato, debo ir a la tabla a buscarlo porque aca no viene
            ps.setString(2, productforSale.getProduct().getName());
            ps.setInt (3, productforSale.getQuantity()); // ojo, ver si es la cantidad vendida o el stock del producto.
            ps.setInt(4, ticketNumber); // OJO esto lo harcodeo ahora pero debo arreglarlo
@@ -227,7 +261,7 @@ public class Repository_SQL implements Repo {
         String name = null;
         connector = new Connect();
         Statement statement = connector.connect().createStatement();
-        rs = statement.executeQuery("SELECT name FROM flower_shop");
+        rs = statement.executeQuery("SELECT flower_shop_name FROM flower_shop");
             if(rs.next()){
                 name = rs.getString("flower_shop_name");
             }
@@ -238,7 +272,7 @@ public class Repository_SQL implements Repo {
 	public void createFlowerShop(String name) throws SQLException {
 
         connector = new Connect();
-        String sql = "INSERT INTO flower shop (flower_shop_name) values (?)";
+        String sql = "INSERT INTO flower_shop (flower_shop_name) values (?)";
         ps = connector.connect().prepareStatement(sql);
         ps.setString(1, name);
         ps.executeUpdate();

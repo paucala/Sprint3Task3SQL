@@ -321,7 +321,8 @@ public class Main {
 			Ticket ticket = new Ticket(ticketDetail);
 			boolean ticketOk = service.createTicket(ticket);
 			if(!ticketOk) {
-				System.err.println("Unable to create ticket");				
+				System.err.println("Unable to create ticket");	
+				
 			}else {
 				System.out.println("Ticket generated succefully");
 			}

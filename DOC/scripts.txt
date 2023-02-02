@@ -44,7 +44,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `floristeria`.`ticket` (
   `ticket_id` INT(11) NOT NULL AUTO_INCREMENT,
   `ticket_prod_id` INT(11) NOT NULL,
-  `ticket_prod_name` INT(11) NOT NULL,
+  `ticket_prod_name` VARCHAR (45) NOT NULL,
   `ticket_prod_quantity` INT(11) NOT NULL,
   `sell_sell_id` INT(11) NOT NULL,
   PRIMARY KEY (`ticket_id`, `sell_sell_id`),

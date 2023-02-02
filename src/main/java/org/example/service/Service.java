@@ -205,8 +205,11 @@ public class Service implements Serv {
             ticket.setTotalPrice(sumTicket(ticket));
 
             // 2) SAVE TICKET
+            try{
             repoCls_SQL.createTicket(ticket);
-
+            }catch (Exception e){
+            	e.printStackTrace();
+            }
             // 3) UPDATE STOCKS
             result = updateStock(ticket); // adónde apunta
 
@@ -350,8 +353,9 @@ public class Service implements Serv {
 
             // 2) SUM SCTOCK VALUE
              
-            result = productList.stream().mapToDouble(x -> x.getPrice()).sum();
+            result = productList.stream().mapToDouble(x -> x.getPrice() * x.getQuantity()).sum();
 
+            
         } catch (Exception ex) {
             throw new SumMethodException(3);
         }
