@@ -583,6 +583,7 @@ public class Service implements Serv {
 
             result = true;
         } catch (Exception ex) {
+            ex.printStackTrace();
             result = false;
         }
 

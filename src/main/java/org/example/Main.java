@@ -328,8 +328,6 @@ public class Main {
 			}
 		}
 			mainMenu();
-		
-
 	}
 
 	private static void invoiceSum() {
@@ -337,7 +335,6 @@ public class Main {
 		try {
 		System.out.println("\n" + "** Total sales amount:  **" + "\n");
 		System.out.println(service.sumAllTickets());
-
 		System.out.println("\n");
 
 		} catch (SumMethodException e) {

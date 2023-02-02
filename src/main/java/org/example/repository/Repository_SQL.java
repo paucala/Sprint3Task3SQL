@@ -19,15 +19,15 @@ public class Repository_SQL implements Repo {
     static Tree tree; // eliminar
     static Decoration decoration; // eliminar
 
-    
+
     /*
      *  >>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      */
-    
+
 
     public void createFlower (Flower flower) throws SQLException {
 
-            
+
             String sql = "INSERT INTO flower (flower_name, flower_color, flower_price, flower_quantity)" +
                     " values (?, ?, ?, ?)";
             connector = new Connect();
@@ -37,11 +37,11 @@ public class Repository_SQL implements Repo {
             ps.setDouble(3, flower.getPrice());
             ps.setInt(4, flower.getQuantity());
             ps.executeUpdate();
-          
+
     }
     public void createTree (Tree tree)throws SQLException {
 
-       
+
             String sql = "INSERT INTO tree (tree_name, tree_price, tree_quantity, tree_height)" +
                     " values (?, ?, ?, ?)";
             connector = new Connect();
@@ -53,10 +53,10 @@ public class Repository_SQL implements Repo {
             ps.executeUpdate();
 
     }
-    
+
     public void createDeco (Decoration decoration)throws SQLException {
 
-        
+
             String sql = "INSERT INTO decoration (decoration_name, decoration_material, decoration_price, decoration_quantity)" +
                     " values (?, ?, ?, ?)";
             connector = new Connect();
@@ -66,12 +66,12 @@ public class Repository_SQL implements Repo {
             ps.setDouble(3, decoration.getPrice());
             ps.setInt(4, decoration.getQuantity());
             ps.executeUpdate();
-        
+
     }
 /*
- *  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LIST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<        
+ *  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LIST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
  */
-    
+
     public List<Product> getAllProducts()  throws IOException {
         List<Product> allProducts = null;
         try {
@@ -130,14 +130,14 @@ public class Repository_SQL implements Repo {
 
 	@Override
 	public boolean findbyName(String name, String type) { //throws Exception {
-		
+
 		String nombre = name;
 		boolean resp = false;
 		connector = new Connect();
 		String sql_decoration = "SELECT * from decoration where decoration_name = ?";
 		String sql_flower = "SELECT * from flower where flower_name = ?";
 		String sql_tree = "SELECT * from tree where tree_name = ?";
-		
+
 		if(type.equalsIgnoreCase("decoration")) {
 			try {
 				ps = connector.connect().prepareStatement(sql_decoration);
@@ -179,26 +179,35 @@ public class Repository_SQL implements Repo {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
-		
-		
-		
-		
+		}
+
 		return resp;
 	}
 
 	@Override
-	public List<Ticket> getAllSells() throws IOException { // TODO
-		// TODO Auto-generated method stub
-		return null;
+	public List<Ticket> getAllSells() throws SQLException {
+
+        List<Ticket> ticketList = new ArrayList<>();
+		connector = new Connect();
+
+        String sql = ("select * from sell");
+
+            ps = connector.connect().prepareStatement(sql);
+            rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Ticket t = new Ticket();
+            t.setTotalPrice(rs.getDouble("sell_amount"));
+            ticketList.add(t);
+        }
+        return ticketList;
 	}
 
-	@Override
+/*	@Override
 	public Product getById(int id, String type) throws IOException { //
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	@Override
 	public void createTicket(Ticket ticket) throws SQLException {
@@ -226,34 +235,46 @@ public class Repository_SQL implements Repo {
 
            ps.setInt(1, 1); // productforSale.getProduct().getId()); // Si necesito el dato, debo ir a la tabla a buscarlo porque aca no viene
            ps.setString(2, productforSale.getProduct().getName());
-           ps.setInt (3, productforSale.getQuantity()); // ojo, ver si es la cantidad vendida o el stock del producto.
-           ps.setInt(4, ticketNumber); // OJO esto lo harcodeo ahora pero debo arreglarlo
+           ps.setInt (3, productforSale.getQuantity());
+           ps.setInt(4, ticketNumber);
            ps.executeUpdate();
         }
 	}
 
 	@Override
-	public void createSell(Ticket sell) throws IOException { // TODO
-		// TODO Auto-generated method stub
-		
+	public void updateTree(Tree tree) throws SQLException {
+
+        connector = new Connect();
+        String sql = "UPDATE tree SET tree_quantity = ? WHERE tree_name = ?";
+        ps = connector.connect().prepareStatement(sql);
+        ps.setInt(1, tree.getQuantity());
+        ps.setString(2, tree.getName());
+        ps.executeUpdate();
+
 	}
 
 	@Override
-	public void updateTree(Tree tree) throws IOException { // TODO
-		// TODO Auto-generated method stub
-		
+	public void updateFlower(Flower flower) throws SQLException { // TODO
+        connector = new Connect();
+        String sql = "UPDATE flower SET flower_quantity = ? WHERE flower_name = ?";
+        ps = connector.connect().prepareStatement(sql);
+        ps.setInt(1, flower.getQuantity());
+        ps.setString(2, flower.getName());
+        ps.executeUpdate();
 	}
 
 	@Override
-	public void updateFlower(Flower flower) throws IOException { // TODO
-		// TODO Auto-generated method stub
-		
-	}
+	public void updateDeco(Decoration decoration) throws SQLException {
 
-	@Override
-	public void updateDeco(Decoration decoration) throws IOException { // TODO
-		// TODO Auto-generated method stub
-		
+		connector = new Connect();
+        String sql = "UPDATE decoration SET decoration_quantity = ? WHERE decoration_name = ?";
+
+            ps = connector.connect().prepareStatement(sql);
+            ps.setInt(1, decoration.getQuantity());
+            ps.setString(2, decoration.getName());
+            ps.executeUpdate();
+
+
 	}
 
 	@Override
@@ -282,3 +303,8 @@ public class Repository_SQL implements Repo {
 
 
 
+/*	@Override
+	public void createSell(Ticket sell) throws IOException { // TODO
+		// TODO Auto-generated method stub
+
+	}*/
