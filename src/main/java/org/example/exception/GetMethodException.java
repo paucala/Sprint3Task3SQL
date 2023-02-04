@@ -8,6 +8,9 @@ package org.example.exception;
  * 3 => getFlowerList
  * 4 => getTreeList
  * 5 => getStock
+ * 6 => getDecoProducts
+ * 7 => getFlowerProducts
+ * 8 => getTreeProducts
  */
 public class GetMethodException extends Exception{
     public GetMethodException(int numMethod){

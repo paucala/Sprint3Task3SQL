@@ -8,11 +8,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface Repo {
-    boolean findbyId(int id, String type) throws IOException;
 
     boolean findbyName(String name, String type) throws IOException, Exception;
 
-    List<Product> getAllProducts() throws IOException;
+    List<Product> getAllProducts() throws SQLException;
     List<Ticket> getAllSells() throws IOException, SQLException;
     void createFlower(Flower flower) throws SQLException;
     void createTree(Tree tree) throws SQLException;
@@ -26,5 +25,3 @@ public interface Repo {
     void createFlowerShop(String name) throws IOException, SQLException;
 
 }
-//void createSell(Ticket sell) throws IOException;
-// Product getById(int id, String type) throws IOException;

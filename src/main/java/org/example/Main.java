@@ -33,15 +33,21 @@ public class Main {
 
 	public static void wellcome() {
 
-		service = new Service();
-		shopName = service.init();
-		if (shopName == null) {
-			shopName = captureString("Insert Flower Shop name");
-			service.createFlowerShop(shopName);
-		}
+		try {
+			service = new Service();
+			shopName = service.init();
+			if (shopName == null) {
+				shopName = captureString("Insert Flower Shop name");
+				service.createFlowerShop(shopName);
+			}
 
-		System.out.println("\n" + "Bienvenido al sistema de gestion de Floristeria " + shopName + "\n");
-		mainMenu();
+			System.out.println("\n" + "Bienvenido al sistema de gestion de Floristeria " + shopName + "\n");
+			mainMenu();
+		}catch (Exception ex){
+			System.out.println("Error while initialization process.\n" +
+					"Please, contact with technical support, sending an e-mail to...\n" +
+					"support@suport.com.\n\nEND OF PROGRAM");
+		}
 	}
 
 	public static void mainMenu() {
@@ -253,81 +259,79 @@ public class Main {
 
 		try {
 			products = service.getAllProducts();
-		} catch (GetMethodException e) {
-			System.err.println("\n" + "Unable to show product list" + "\n");
-		} 
 
-		Map<Integer, Product> productsToShow = new HashMap<>();
-		List<ProductforSale> ticketDetail = new ArrayList<>();
-		System.out.println("\n" + "** Create ticket **" + "\n");
-		System.out.println("Products to include in ticket: " + "\n");
 
-		// No agrega a la lista los prods sin stock
-		for (Product product : products) {
-			if(product.getQuantity() > 0) {
-				order++;
-				productsToShow.put(order, product);
-				System.out.println("id: " + order + " name: " + product.getName() + " price: " + product.getPrice() + " stock: " + product.getQuantity());
-			 }
+			Map<Integer, Product> productsToShow = new HashMap<>();
+			List<ProductforSale> ticketDetail = new ArrayList<>();
+			System.out.println("\n" + "** Create ticket **" + "\n");
+			System.out.println("Products to include in ticket: " + "\n");
+
+			// No agrega a la lista los prods sin stock
+			for (Product product : products) {
+				if (product.getQuantity() > 0) {
+					order++;
+					productsToShow.put(order, product);
+					System.out.println("id: " + order + " name: " + product.getName() + " price: " + product.getPrice() + " stock: " + product.getQuantity());
+				}
 			}
 
-		do {
-			selection = captureNumber("\n" + "Select product from list or 0 to finish: " + "\n");
+			do {
+				selection = captureNumber("\n" + "Select product from list or 0 to finish: " + "\n");
 
-			if (selection <= products.size() && selection > 0) {
-				int productQuantity = captureNumber("Quantity: " + "\n");
-				Product productSelected = productsToShow.get(selection);
-				ProductforSale productForSale = new ProductforSale(productSelected, productQuantity);
-				boolean enoughStock = service.checkStock(productForSale);
-				if(selection <= products.size() && selection > 0){
-					if(enoughStock == false){
-						do{
-							System.out.println("Not enough stock. Please try again.");
-							productQuantity = captureNumber("Quantity: " + "\n");
-							productForSale.setQuantity(productQuantity);
-							enoughStock = service.checkStock(productForSale);
-						}while (enoughStock == false);
+				if (selection <= products.size() && selection > 0) {
+					int productQuantity = captureNumber("Quantity: " + "\n");
+					Product productSelected = productsToShow.get(selection);
+					ProductforSale productForSale = new ProductforSale(productSelected, productQuantity);
+					boolean enoughStock = service.checkStock(productForSale,productForSale.getProduct().getName());
+					if (selection <= products.size() && selection > 0) {
+						if (enoughStock == false) {							do {
+								System.out.println("Not enough stock. Please try again.");
+								productQuantity = captureNumber("Quantity: " + "\n");
+								productForSale.setQuantity(productQuantity);
+								enoughStock = service.checkStock(productForSale, productForSale.getProduct().getName());
+							} while (enoughStock == false);
+						}
 					}
-				}
 
-				// controlar si el prod esta repetido
-				
-				boolean noRepeat = service.checkExistOnTicket(ticketDetail, productForSale.getProduct().getName());
-					if(noRepeat == false) {
+					// controlar si el prod esta repetido
+
+					boolean noRepeat = service.checkExistOnTicket(ticketDetail, productForSale.getProduct().getName());
+					if (noRepeat == false) {
 						ticketDetail.add(productForSale);
-						totalAmount = totalAmount + productSelected.getPrice() * productForSale.getQuantity();					
+						totalAmount = totalAmount + productSelected.getPrice() * productForSale.getQuantity();
 					} else {
 						System.out.println("The product already exists in the ticket.");
 					}
-					
-					
-				
-				//
-			} else if (selection > 0){
 
-				System.out.println("Product not included in the list, try again");
+					//
+				} else if (selection > 0) {
+
+					System.out.println("Product not included in the list, try again");
+				}
+			} while (selection != 0);
+
+			if (!ticketDetail.isEmpty()) {
+
+				System.out.println("\n" + "** Ticket detail **" + "\n");
+
+				for (ProductforSale productforSale : ticketDetail) {
+					System.out.println("Product: " + productforSale.getProduct().getName() + " price: " + productforSale.getProduct().getPrice() + " quantity: " + productforSale.getQuantity());
+				}
+				System.out.println("\n" + "Total amount: " + totalAmount + "\n");
+
+				Ticket ticket = new Ticket(ticketDetail);
+				boolean ticketOk = service.createTicket(ticket);
+				if (!ticketOk) {
+					System.err.println("Unable to create ticket");
+
+				} else {
+					System.out.println("Ticket generated succefully");
+				}
 			}
-		} while (selection != 0);
-
-		if (!ticketDetail.isEmpty()) {
-
-			System.out.println("\n" + "** Ticket detail **" + "\n");
-
-			for (ProductforSale productforSale : ticketDetail) {
-				System.out.println("Product: " + productforSale.getProduct().getName() + " price: " + productforSale.getProduct().getPrice()  + " quantity: " + productforSale.getQuantity());
-			}
-			System.out.println("\n" + "Total amount: " + totalAmount + "\n");
-
-			Ticket ticket = new Ticket(ticketDetail);
-			boolean ticketOk = service.createTicket(ticket);
-			if(!ticketOk) {
-				System.err.println("Unable to create ticket");	
-				
-			}else {
-				System.out.println("Ticket generated succefully");
-			}
+		} catch (Exception e) {
+			System.err.println("\n" + "Unable to show product list" + "\n");
 		}
-			mainMenu();
+		mainMenu();
 	}
 
 	private static void invoiceSum() {

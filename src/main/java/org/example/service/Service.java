@@ -2,10 +2,12 @@ package org.example.service;
 
 import org.example.domain.*;
 import org.example.exception.GetMethodException;
+import org.example.exception.InitExecption;
 import org.example.exception.SumMethodException;
 import org.example.repository.Repository_SQL;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,20 +16,16 @@ public class Service implements Serv {
     //region ATTRIBUTES
 
     private static Repository_SQL repoCls_SQL;
-    
+
     //endregion ATTRIBUTES
 
 
     //region METHODS: CHECK
 
     @Override
-    public boolean checkStock(ProductforSale proSale) { // No conecta con Respository
+    public boolean checkStock(ProductforSale proSale, String nameIn) {
         //region DEFINITION VARIABLES
-        boolean resul = false, contin = false;
-        int i = 0;
-        List<Decoration> decoList;
-        List<Flower> flowerList;
-        List<Tree> treeList;
+        boolean resul = false;
 
         //endregion DEFINITION VARIABLES
 
@@ -36,38 +34,17 @@ public class Service implements Serv {
         try {
             // 1) GET ALL PRODUCTS OF SAME TYPE
             if (proSale.getProduct().getClass() == Decoration.class) {
-                decoList = new ArrayList<>(getDecoProducts());
-
                 // 2) CHECK PRODUCT STOCK
-                while (i < decoList.size() && !contin) {
-                    if (decoList.get(i).getId() == proSale.getProduct().getId()) {
-                        contin = true;
-                        resul = proSale.getQuantity() <= decoList.get(i).getQuantity();
-                    }
-                    i++;
-                }
+                resul = proSale.getQuantity() < repoCls_SQL.chechStock("decoration", nameIn);
+
             } else if (proSale.getProduct().getClass() == Flower.class) {
-                flowerList = new ArrayList<>(getFlowerProducts());
-
                 // 2) CHECK PRODUCT STOCK
-                while (i < flowerList.size() && !contin) {
-                    if (flowerList.get(i).getId() == proSale.getProduct().getId()) {
-                        contin = true;
-                        resul = proSale.getQuantity() <= flowerList.get(i).getQuantity();
-                    }
-                    i++;
-                }
+                resul = proSale.getQuantity() < repoCls_SQL.chechStock("flower", nameIn);
+
             } else if (proSale.getProduct().getClass() == Tree.class) {
-                treeList = new ArrayList<>(getTreeProducts());
-
                 // 2) CHECK PRODUCT STOCK
-                while (i < treeList.size() && !contin) {
-                    if (treeList.get(i).getId() == proSale.getProduct().getId()) {
-                        contin = true;
-                        resul = proSale.getQuantity() <= treeList.get(i).getQuantity();
-                    }
-                    i++;
-                }
+                resul = proSale.getQuantity() < repoCls_SQL.chechStock("tree", nameIn);
+
             }
 
         } catch (Exception ex) {
@@ -81,8 +58,8 @@ public class Service implements Serv {
         return resul;
     }
 
-
-    public boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, String nameIn){
+    @Override
+    public boolean checkExistOnTicket(List<ProductforSale> proSafeListIn, String nameIn) {
         //region DEFINITION VARIABLES
         boolean resul = false, exit = false;
         int index = 0;
@@ -91,26 +68,22 @@ public class Service implements Serv {
 
 
         //region ACTIONS
-        try{
-            do{
-                if(proSafeListIn.get(index).getProduct().getName().equals(nameIn)){
-                    exit =true;
+        if (proSafeListIn.size() > 0) {
+            do {
+                if (proSafeListIn.get(index).getProduct().getName().equals(nameIn)) {
+                    exit = true;
                     resul = true;
                 }
 
                 index++;
-            }while (proSafeListIn.size() < index || exit != true);
-
-
-        }catch (Exception ex){
-
+            } while (proSafeListIn.size() < index && !exit);
         }
+
         //endregion ACTIONS
 
 
         // OUT
         return resul;
-
 
     }
 
@@ -129,8 +102,8 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            if(repoCls_SQL == null) {
-                repoCls_SQL = new Repository_SQL();
+            if (repoCls_SQL == null) {
+                repoCls_SQL = Repository_SQL.getInstance();
             }
 
             // CALL REPOSITORY METHOD
@@ -146,7 +119,7 @@ public class Service implements Serv {
 
 
     @Override
-    public boolean createProduct(Product product) { // Changed to SQL
+    public boolean createProduct(Product product) {
         //region DEFINITION VARIABLES
         boolean resul = false;
 
@@ -156,22 +129,22 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls_SQL = new Repository_SQL();
+            repoCls_SQL = Repository_SQL.getInstance();
 
             // CALL REPOSITORY METHODS
             if (product.getClass() == Decoration.class) {
                 if (!repoCls_SQL.findbyName(product.getName(), "Decoration")) {
-                	repoCls_SQL.createDeco((Decoration) product);
+                    repoCls_SQL.createDeco((Decoration) product);
                     resul = true;
                 }
             } else if (product.getClass() == Flower.class) {
                 if (!repoCls_SQL.findbyName(product.getName(), "Flower")) {
-                	repoCls_SQL.createFlower((Flower) product);
+                    repoCls_SQL.createFlower((Flower) product);
                     resul = true;
                 }
             } else if (product.getClass() == Tree.class) {
                 if (!repoCls_SQL.findbyName(product.getName(), "Tree")) {
-                	repoCls_SQL.createTree((Tree) product);
+                    repoCls_SQL.createTree((Tree) product);
                     resul = true;
                 }
             }
@@ -199,19 +172,20 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls_SQL = new Repository_SQL();
+            repoCls_SQL = Repository_SQL.getInstance();
 
             // 1) CALCULATE TOTAL PRICE
             ticket.setTotalPrice(sumTicket(ticket));
 
             // 2) SAVE TICKET
-            try{
-            repoCls_SQL.createTicket(ticket);
-            }catch (Exception e){
-            	e.printStackTrace();
+            try {
+                repoCls_SQL.createTicket(ticket);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
             // 3) UPDATE STOCKS
-            result = updateStock(ticket); // adónde apunta
+            result = updateStock(ticket);
 
         } catch (Exception ex) {
             result = false;
@@ -230,7 +204,7 @@ public class Service implements Serv {
 
     //region METHODS: GET
     @Override
-    public List<Product> getAllProducts() throws GetMethodException { // DONE
+    public List<Product> getAllProducts() throws GetMethodException {
         //region DEFINITION VARIABLES
         List<Product> productList;
 
@@ -240,7 +214,7 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls_SQL = new Repository_SQL();
+            repoCls_SQL = Repository_SQL.getInstance();
 
             // CALL REPOSITORY METHOD
             productList = new ArrayList<>(repoCls_SQL.getAllProducts());
@@ -261,55 +235,12 @@ public class Service implements Serv {
     //endregion METHODS: GET
 
 
-    //region METHODS: UPDATE
-
-    @Override
-    public boolean updateProduct(Product product) {
-        //region DEFINITION VARIABLES
-        boolean result;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        try {
-            // INIT VARIABLES
-            repoCls_SQL = new Repository_SQL();
-
-            // CALL REPOSITORY METHOD
-            if (product.getClass() == Decoration.class) {
-                repoCls_SQL.updateDeco((Decoration) product);
-                result = true;
-            } else if (product.getClass() == Flower.class) {
-                repoCls_SQL.updateFlower((Flower) product);
-                result = true;
-            } else if (product.getClass() == Tree.class) {
-                repoCls_SQL.updateTree((Tree) product);
-                result = true;
-            } else {
-                result = false;
-            }
-
-        } catch (Exception ex) {
-            result = false;
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return result;
-    }
-
-    //endregion METHODS: UPDATE
-
-
     //region METHODS: OTHERS (INIT, SUM,...)
 
     @Override
-    public String init() {
+    public String init() throws InitExecption {
         //region DEFINITION VARIABLES
-        String name = null;
+        String name;
 
         //endregion DEFINITION VARIABLES
 
@@ -317,13 +248,13 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls_SQL = new Repository_SQL();
+            repoCls_SQL = Repository_SQL.getInstance();
 
             // CALL REPOSITORY METHOD
             name = repoCls_SQL.init();
 
         } catch (Exception ex) {
-            //TODO control errors
+            throw new InitExecption();
         }
 
         //endregion ACTIONS
@@ -335,9 +266,9 @@ public class Service implements Serv {
     }
 
     @Override
-    public double sumStock() throws SumMethodException { // DONE
+    public double sumStock() throws SumMethodException {
         //region DEFINITION VARIABLES
-        double result = 0;
+        double result;
         List<Product> productList;
 
         //endregion DEFINITION VARIABLES
@@ -346,16 +277,14 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VALUES
-            repoCls_SQL = new Repository_SQL();
+            repoCls_SQL = Repository_SQL.getInstance();
 
             /// 1) GET PRODCUTS
             productList = new ArrayList<>(repoCls_SQL.getAllProducts());
 
             // 2) SUM SCTOCK VALUE
-             
             result = productList.stream().mapToDouble(x -> x.getPrice() * x.getQuantity()).sum();
 
-            
         } catch (Exception ex) {
             throw new SumMethodException(3);
         }
@@ -402,9 +331,9 @@ public class Service implements Serv {
      * @throws SumMethodException En el cas que hi hagi algun error, saltarà aquesta execpció.
      */
     @Override
-    public double sumAllTickets() throws SumMethodException { // TODO
+    public double sumAllTickets() throws SumMethodException {
         //region DEFINITION VARIABLES
-        double result = 0;
+        double result;
         List<Ticket> ticketList;
 
         //endregion DEFINITION VARIABLES
@@ -413,13 +342,13 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT VARIABLES
-            repoCls_SQL = new Repository_SQL();
+            repoCls_SQL = Repository_SQL.getInstance();
 
             // 1) GET ALL TICKETS ON DDBB
             ticketList = new ArrayList<>(repoCls_SQL.getAllSells());
 
             // 2) SUM TICKETS VALUES
-            result = ticketList.stream().mapToDouble(x -> x.getTotalPrice()).sum();
+            result = ticketList.stream().mapToDouble(Ticket::getTotalPrice).sum();
 
         } catch (Exception ex) {
             throw new SumMethodException(1);
@@ -439,124 +368,12 @@ public class Service implements Serv {
     //region PRIVATE METHODS
 
     /**
-     * Mètode que retorna tots els prodcutes tipus Decoration.
-     *
-     * @return Tipus List<Decoration>. La llista amb els productes tipus Decoration.
-     * @throws IOException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
-    private List<Decoration> getDecoProducts() throws IOException {
-        //region DEFINITION VARIABLES
-        List<Decoration> decoList;
-        List<Product> productList;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        // INIT VARIABLES
-        decoList = new ArrayList<>();
-        repoCls_SQL = new Repository_SQL();
-
-        // 1) GET ALL PRODUCTS
-        productList = new ArrayList<>(repoCls_SQL.getAllProducts());
-
-        // 2) FIND DECORATION PRODUCTS
-        for (Product p : productList) {
-            if (p.getClass() == Decoration.class) {
-                decoList.add((Decoration) p);
-            }
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return decoList;
-
-    }
-
-    /**
-     * Mètode que retorna tots els prodcutes tipus Flower.
-     *
-     * @return Tipus List<Flower>. La llista amb els productes tipus Flower.
-     * @throws IOException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
-    private List<Flower> getFlowerProducts() throws IOException {
-        //region DEFINITION VARIABLES
-        List<Flower> flowerList;
-        List<Product> productList;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        // INIT VARIABLES
-        flowerList = new ArrayList<>();
-        repoCls_SQL = new Repository_SQL();
-
-        // 1) GET ALL PRODUCTS
-        productList = new ArrayList<>(repoCls_SQL.getAllProducts());
-
-        // 2) FIND DECORATION PRODUCTS
-        for (Product p : productList) {
-            if (p.getClass() == Flower.class) {
-                flowerList.add((Flower) p);
-            }
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return flowerList;
-
-    }
-
-    /**
-     * Mètode que retorna tots els prodcutes tipus Tree.
-     *
-     * @return Tipus List<Decoration>. La llista amb els productes tipus Tree.
-     * @throws IOException En el cas que hi hagi algun error, saltarà aquesta execpció.
-     */
-    private List<Tree> getTreeProducts() throws IOException {
-        //region DEFINITION VARIABLES
-        List<Tree> treeList;
-        List<Product> productList;
-
-        //endregion DEFINITION VARIABLES
-
-
-        //region ACTIONS
-        // INIT VARIABLES
-        treeList = new ArrayList<>();
-
-        repoCls_SQL = new Repository_SQL();
-
-        // 1) GET ALL PRODUCTS
-        productList = new ArrayList<>(repoCls_SQL.getAllProducts());
-
-        // 2) FIND DECORATION PRODUCTS
-        for (Product p : productList) {
-            if (p.getClass() == Tree.class) {
-                treeList.add((Tree) p);
-            }
-        }
-
-        //endregion ACTIONS
-
-
-        // OUT
-        return treeList;
-
-    }
-
-    /**
      * Mètode per actualitzar el stock de tots els articles
      *
      * @param ticket Classe del tipus Ticket amb la llista de tots els productes que s'han comprat.
      * @return Tipus boolean. False = hi ha hagut algun problema; True = No hi hagut cap problema.
      */
-    private boolean updateStock(Ticket ticket) { // TODO
+    private boolean updateStock(Ticket ticket) {
         //region DEFINITION VARIABLES
         boolean result = false;
 
@@ -566,7 +383,7 @@ public class Service implements Serv {
         //region ACTIONS
         try {
             // INIT
-            repoCls_SQL = new Repository_SQL();
+            repoCls_SQL = Repository_SQL.getInstance();
 
             // ITERATE FOR ALL PRODUCTS
             for (ProductforSale p : ticket.getProductforSales()) {

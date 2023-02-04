@@ -15,28 +15,40 @@ public class Repository_SQL implements Repo {
     Connect connector;
     PreparedStatement ps;
     ResultSet rs;
-    static Flower flower; // eliminar
-    static Tree tree; // eliminar
-    static Decoration decoration; // eliminar
+
+    public static Repository_SQL instance;
+
+    //region CONSTRUCTOR
+    private Repository_SQL(){
+
+    }
+
+    public static Repository_SQL getInstance(){
+        if (instance == null){
+            instance = new Repository_SQL();
+        }
+        return instance;
+    }
+
+    //endregion CONSTRUCTOR
 
 
     /*
      *  >>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      */
 
-
     public void createFlower (Flower flower) throws SQLException {
 
 
-            String sql = "INSERT INTO flower (flower_name, flower_color, flower_price, flower_quantity)" +
-                    " values (?, ?, ?, ?)";
-            connector = new Connect();
-            ps = connector.connect().prepareStatement(sql);
-            ps.setString(1, flower.getName());
-            ps.setString(2, flower.getColor());
-            ps.setDouble(3, flower.getPrice());
-            ps.setInt(4, flower.getQuantity());
-            ps.executeUpdate();
+        String sql = "INSERT INTO flower (flower_name, flower_color, flower_price, flower_quantity)" +
+                " values (?, ?, ?, ?)";
+        connector = new Connect();
+        ps = connector.connect().prepareStatement(sql);
+        ps.setString(1, flower.getName());
+        ps.setString(2, flower.getColor());
+        ps.setDouble(3, flower.getPrice());
+        ps.setInt(4, flower.getQuantity());
+        ps.executeUpdate();
 
     }
     public void createTree (Tree tree)throws SQLException {
@@ -72,9 +84,8 @@ public class Repository_SQL implements Repo {
  *  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LIST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
  */
 
-    public List<Product> getAllProducts()  throws IOException {
+    public List<Product> getAllProducts() throws SQLException {
         List<Product> allProducts = null;
-        try {
             allProducts = new ArrayList<>();
             String sql1 = ("select * from decoration");
             String sql2 = ("select * from flower");
@@ -85,6 +96,7 @@ public class Repository_SQL implements Repo {
 
             while (rs.next()) {
                 Decoration d = new Decoration();
+                d.setId(rs.getInt("decoration_id"));
                 d.setName(rs.getString("decoration_name"));
                 d.setMaterial(rs.getString("decoration_material"));
                 d.setPrice(rs.getDouble("decoration_price"));
@@ -96,6 +108,7 @@ public class Repository_SQL implements Repo {
 
             while (rs.next()) {
                 Flower f = new Flower();
+                f.setId(rs.getInt("flower_id"));
                 f.setName(rs.getString("flower_name"));
                 f.setColor(rs.getString("flower_color"));
                 f.setPrice(rs.getDouble("flower_price"));
@@ -107,6 +120,7 @@ public class Repository_SQL implements Repo {
 
             while (rs.next()) {
                 Tree t = new Tree();
+                t.setId(rs.getInt("tree_id"));
                 t.setName(rs.getString("tree_name"));
                 t.setHigh(rs.getDouble("tree_height"));
                 t.setPrice(rs.getDouble("tree_price"));
@@ -116,20 +130,11 @@ public class Repository_SQL implements Repo {
             ps.close();
             rs.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return allProducts;
     }
 
 	@Override
-	public boolean findbyId(int id, String type) throws IOException { //
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean findbyName(String name, String type) { //throws Exception {
+	public boolean findbyName(String name, String type) throws SQLException {
 
 		String nombre = name;
 		boolean resp = false;
@@ -139,48 +144,18 @@ public class Repository_SQL implements Repo {
 		String sql_tree = "SELECT * from tree where tree_name = ?";
 
 		if(type.equalsIgnoreCase("decoration")) {
-			try {
-				ps = connector.connect().prepareStatement(sql_decoration);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            ps = connector.connect().prepareStatement(sql_decoration);
 		}else if (type.equalsIgnoreCase("flower")) {
-			try {
-				ps = connector.connect().prepareStatement(sql_flower);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            ps = connector.connect().prepareStatement(sql_flower);
 		}else if (type.equalsIgnoreCase("tree")) {
-			try {
-				ps = connector.connect().prepareStatement(sql_tree);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			ps.setString(1, nombre);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			rs = ps.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			while (rs.next()){
-				resp =  true;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            ps = connector.connect().prepareStatement(sql_tree);
 		}
 
+        ps.setString(1, nombre);
+        rs = ps.executeQuery();
+        while (rs.next()){
+            resp =  true;
+        }
 		return resp;
 	}
 
@@ -202,12 +177,6 @@ public class Repository_SQL implements Repo {
         }
         return ticketList;
 	}
-
-/*	@Override
-	public Product getById(int id, String type) throws IOException { //
-		// TODO Auto-generated method stub
-		return null;
-	}*/
 
 	@Override
 	public void createTicket(Ticket ticket) throws SQLException {
@@ -233,7 +202,7 @@ public class Repository_SQL implements Repo {
 
         for(ProductforSale productforSale : ticketDetail){
 
-           ps.setInt(1, 1); // productforSale.getProduct().getId()); // Si necesito el dato, debo ir a la tabla a buscarlo porque aca no viene
+           ps.setInt(1, 1);
            ps.setString(2, productforSale.getProduct().getName());
            ps.setInt (3, productforSale.getQuantity());
            ps.setInt(4, ticketNumber);
@@ -274,11 +243,11 @@ public class Repository_SQL implements Repo {
             ps.setString(2, decoration.getName());
             ps.executeUpdate();
 
-
 	}
 
 	@Override
 	public String init() throws SQLException {
+
         String name = null;
         connector = new Connect();
         Statement statement = connector.connect().createStatement();
@@ -299,12 +268,29 @@ public class Repository_SQL implements Repo {
         ps.executeUpdate();
 	}
 
+    public int chechStock(String produType, String produName) throws SQLException {
+        //region DEFINITION VARIABLES
+        int resul = 0;
+
+        //endregion DEFINITION VARIABLES
+
+
+        //region ACTIONS
+        connector = new Connect();
+        ps = connector.connect().prepareStatement(String.format("select %s_quantity from %s where %s_name like \"%s\"",
+                produType, produType, produType, produName));
+        rs = ps.executeQuery();
+
+        while (rs.next()){
+            resul = rs.getInt(String.format("%s_quantity", produType));
+        }
+
+        //endregion ACTIONS
+
+
+        // OUT
+        return resul;
+
     }
+}
 
-
-
-/*	@Override
-	public void createSell(Ticket sell) throws IOException { // TODO
-		// TODO Auto-generated method stub
-
-	}*/

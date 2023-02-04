@@ -2,9 +2,9 @@ package org.example.service;
 
 import org.example.domain.*;
 import org.example.exception.GetMethodException;
+import org.example.exception.InitExecption;
 import org.example.exception.SumMethodException;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface Serv {
@@ -16,7 +16,7 @@ public interface Serv {
      * @param proSale La classe 'ProductforSale' per realitzar la comprovació.
      * @return Tipus boolena; False = no hi ha suficient stock; True: sí hi ha stock suficient.
      */
-    boolean checkStock(ProductforSale proSale);
+    boolean checkStock(ProductforSale proSale, String nameIn);
 
     /**
      * Comprova si en la llsita de ProductfoSafe ja existeixun id
@@ -69,26 +69,13 @@ public interface Serv {
     //endregion METHODS: GET
 
 
-    //region METHODS: UPDATE
-
-    /**
-     * Mètode per actualitzar la info d'un producte.
-     *
-     * @param product Necessita la classe del producte que s'ha de modificar.
-     * @return Tipus boolena. false = hi hagut algun error; true = tot ha sortit bé.
-     */
-    boolean updateProduct(Product product);
-
-    //endregion METHODS: UPDATE
-
-
     //region METHODS: OTHERS (INIT, SUM,...)
     /**
      * Mètode per inicialitzar la floristeria.
      *
      * @return Tipus string. Si retorna null vol dir que és la primera vegada, si no, retorna el nom de la floristeria.
      */
-    String init();
+    String init() throws InitExecption;
 
     /**
      * Mètode per sumar el valor de tot el stock de la floristeria.
