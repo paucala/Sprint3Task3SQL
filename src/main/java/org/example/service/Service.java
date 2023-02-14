@@ -35,15 +35,15 @@ public class Service implements Serv {
             // 1) GET ALL PRODUCTS OF SAME TYPE
             if (proSale.getProduct().getClass() == Decoration.class) {
                 // 2) CHECK PRODUCT STOCK
-                resul = proSale.getQuantity() < repoCls_SQL.chechStock("decoration", nameIn);
+                resul = proSale.getQuantity() <= repoCls_SQL.chechStock("decoration", nameIn);
 
             } else if (proSale.getProduct().getClass() == Flower.class) {
                 // 2) CHECK PRODUCT STOCK
-                resul = proSale.getQuantity() < repoCls_SQL.chechStock("flower", nameIn);
+                resul = proSale.getQuantity() <= repoCls_SQL.chechStock("flower", nameIn);
 
             } else if (proSale.getProduct().getClass() == Tree.class) {
                 // 2) CHECK PRODUCT STOCK
-                resul = proSale.getQuantity() < repoCls_SQL.chechStock("tree", nameIn);
+                resul = proSale.getQuantity() <= repoCls_SQL.chechStock("tree", nameIn);
 
             }
 
